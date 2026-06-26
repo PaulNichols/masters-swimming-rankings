@@ -323,6 +323,8 @@ export function App() {
   const [selectedCompetitionName, setSelectedCompetitionName] = useState('all');
   const [selectedCompetitionCourse, setSelectedCompetitionCourse] = useState('all');
   const [selectedCompetitionEvent, setSelectedCompetitionEvent] = useState('all');
+  const [selectedTrendKey, setSelectedTrendKey] = useState('');
+  const [selectedResultTrendKey, setSelectedResultTrendKey] = useState('');
   const [rankingPage, setRankingPage] = useState(1);
   const [shareStatus, setShareStatus] = useState('Copy link');
 
@@ -347,6 +349,11 @@ export function App() {
 
   useEffect(() => {
     setRankingPage(1);
+  }, [selectedSwimmerId, selectedYear, selectedAgeGroup, selectedRankingScope]);
+
+  useEffect(() => {
+    setSelectedTrendKey('');
+    setSelectedResultTrendKey('');
   }, [selectedSwimmerId, selectedYear, selectedAgeGroup, selectedRankingScope]);
 
   const shareUrl = useMemo(
@@ -499,6 +506,8 @@ export function App() {
       })
       .sort((a, b) => b.bestPoints - a.bestPoints || a.label.localeCompare(b.label));
   }, [filteredPointResults]);
+  const selectedTrend = trends.find((trend) => trend.key === selectedTrendKey) ?? trends[0];
+  const selectedResultTrend = resultTrends.find((trend) => trend.key === selectedResultTrendKey) ?? resultTrends[0];
 
   const currentEntries = useMemo(
     () => [...(latest?.entries ?? [])]
@@ -933,42 +942,62 @@ export function App() {
                 <p className="eyebrow">{trends.length ? 'Movement' : 'Historical results'}</p>
                 <h2>{trends.length ? 'Ranking history' : 'Result history'}</h2>
               </div>
+              {trends.length > 1 && (
+                <div className="section-controls history-controls">
+                  <label className="field compact">
+                    <span>Ranking graph</span>
+                    <select value={selectedTrend?.key ?? ''} onChange={(event) => setSelectedTrendKey(event.target.value)}>
+                      {trends.map((trend) => (
+                        <option key={trend.key} value={trend.key}>{trend.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              )}
+              {!trends.length && resultTrends.length > 1 && (
+                <div className="section-controls history-controls">
+                  <label className="field compact">
+                    <span>Result graph</span>
+                    <select value={selectedResultTrend?.key ?? ''} onChange={(event) => setSelectedResultTrendKey(event.target.value)}>
+                      {resultTrends.map((trend) => (
+                        <option key={trend.key} value={trend.key}>{trend.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              )}
             </div>
-            {trends.length ? (
-              <div className="trend-grid">
-                {trends.map((trend) => (
-                  <article key={trend.key} className="trend-card">
-                    <div className="trend-card-head">
-                      <strong>{trend.label}</strong>
-                      <span className={trend.movement && trend.movement < 0 ? 'down' : trend.movement && trend.movement > 0 ? 'up' : ''}>
-                        {movementText(trend.movement)}
-                      </span>
-                    </div>
-                    <TrendChart entries={trend.entries} />
-                    <div className="trend-meta">
-                      <span>Best {ordinal(trend.bestPlace)}</span>
-                      <span>Latest {ordinal(trend.latestPlace)}</span>
-                      <span>Best time {formatSeconds(trend.bestTimeSeconds)}</span>
-                    </div>
-                  </article>
-                ))}
+            {selectedTrend ? (
+              <div className="trend-grid focused-trend-grid">
+                <article key={selectedTrend.key} className="trend-card">
+                  <div className="trend-card-head">
+                    <strong>{selectedTrend.label}</strong>
+                    <span className={selectedTrend.movement && selectedTrend.movement < 0 ? 'down' : selectedTrend.movement && selectedTrend.movement > 0 ? 'up' : ''}>
+                      {movementText(selectedTrend.movement)}
+                    </span>
+                  </div>
+                  <TrendChart entries={selectedTrend.entries} />
+                  <div className="trend-meta">
+                    <span>Best {ordinal(selectedTrend.bestPlace)}</span>
+                    <span>Latest {ordinal(selectedTrend.latestPlace)}</span>
+                    <span>Best time {formatSeconds(selectedTrend.bestTimeSeconds)}</span>
+                  </div>
+                </article>
               </div>
-            ) : resultTrends.length ? (
-              <div className="trend-grid">
-                {resultTrends.map((trend) => (
-                  <article key={trend.key} className="trend-card result-trend-card">
-                    <div className="trend-card-head">
-                      <strong>{trend.label}</strong>
-                      <span>{trend.entries.length} swims</span>
-                    </div>
-                    <PointsChart entries={trend.entries} />
-                    <div className="trend-meta">
-                      <span>Best {trend.bestPoints} pts</span>
-                      <span>Latest {trend.latestPoints} pts</span>
-                      <span>Best time {formatSeconds(trend.bestTimeSeconds)}</span>
-                    </div>
-                  </article>
-                ))}
+            ) : selectedResultTrend ? (
+              <div className="trend-grid focused-trend-grid">
+                <article key={selectedResultTrend.key} className="trend-card result-trend-card">
+                  <div className="trend-card-head">
+                    <strong>{selectedResultTrend.label}</strong>
+                    <span>{selectedResultTrend.entries.length} swims</span>
+                  </div>
+                  <PointsChart entries={selectedResultTrend.entries} />
+                  <div className="trend-meta">
+                    <span>Best {selectedResultTrend.bestPoints} pts</span>
+                    <span>Latest {selectedResultTrend.latestPoints} pts</span>
+                    <span>Best time {formatSeconds(selectedResultTrend.bestTimeSeconds)}</span>
+                  </div>
+                </article>
               </div>
             ) : (
               <div className="inline-empty">No ranking snapshots or scored result history in this filtered view.</div>
