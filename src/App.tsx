@@ -126,6 +126,7 @@ export function App() {
   }, [selectedSwimmerId, selectedYear, selectedAgeGroup]);
 
   const selectedSwimmer = store.swimmers.find((swimmer) => swimmer.id === selectedSwimmerId) ?? store.swimmers[0];
+  const sortedSwimmers = [...store.swimmers].sort((a, b) => a.name.localeCompare(b.name));
   const swimmerSnapshots = store.snapshots.filter((snapshot) => snapshot.swimmerId === selectedSwimmer?.id);
   const swimmerCompetitions = store.competitions.filter((result) => result.swimmerId === selectedSwimmer?.id);
   const years = [...new Set(swimmerCompetitions.map((result) => result.year ?? new Date(result.date).getFullYear()))]
@@ -244,7 +245,7 @@ export function App() {
                 setSelectedSwimmerId(nextSwimmerId);
                 setSelectedAgeGroup(currentAgeGroupFor(store, nextSwimmerId));
               }}>
-                {store.swimmers.map((swimmer) => (
+                {sortedSwimmers.map((swimmer) => (
                   <option key={swimmer.id} value={swimmer.id}>{swimmer.name}</option>
                 ))}
               </select>
