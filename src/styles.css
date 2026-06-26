@@ -172,6 +172,33 @@ button:hover {
   border-color: #0f766e;
 }
 
+.tab-list {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab-list button {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(246, 252, 251, 0.92));
+  border-color: #b8dcd8;
+  box-shadow: 0 8px 18px rgba(14, 91, 112, 0.06);
+  min-height: 40px;
+}
+
+.tab-list button.active {
+  background:
+    linear-gradient(90deg, #087c89, #1f7ae0);
+  border-color: #087c89;
+  color: #ffffff;
+}
+
+.tab-panel {
+  display: grid;
+  gap: 18px;
+}
+
 .panel,
 .empty-state {
   background:
@@ -644,10 +671,15 @@ button:hover {
 
   .top-content,
   .top-controls,
+  .tab-list,
   .section-controls,
   .section-heading {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .tab-list button {
+    width: 100%;
   }
 
   .field {

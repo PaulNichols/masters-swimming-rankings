@@ -29,6 +29,17 @@ type ShareParams = {
   rankingScope?: string;
 };
 
+type DashboardTab = 'results' | 'endurance' | 'points' | 'opportunities' | 'history' | 'competitions';
+
+const dashboardTabs: Array<{ id: DashboardTab; label: string }> = [
+  { id: 'results', label: 'Results' },
+  { id: 'endurance', label: 'Endurance' },
+  { id: 'points', label: 'Points' },
+  { id: 'opportunities', label: 'Opportunities' },
+  { id: 'history', label: 'History' },
+  { id: 'competitions', label: 'Competitions' },
+];
+
 type ResultTrend = {
   key: string;
   label: string;
@@ -325,6 +336,7 @@ export function App() {
   const [selectedCompetitionEvent, setSelectedCompetitionEvent] = useState('all');
   const [selectedTrendKey, setSelectedTrendKey] = useState('');
   const [selectedResultTrendKey, setSelectedResultTrendKey] = useState('');
+  const [activeTab, setActiveTab] = useState<DashboardTab>('results');
   const [rankingPage, setRankingPage] = useState(1);
   const [shareStatus, setShareStatus] = useState('Copy link');
 
@@ -764,9 +776,24 @@ export function App() {
         </section>
       ) : (
         <>
-          {rankingRows}
+          <nav className="tab-list" aria-label="Dashboard sections">
+            {dashboardTabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                className={activeTab === tab.id ? 'active' : ''}
+                onClick={() => setActiveTab(tab.id)}
+                aria-pressed={activeTab === tab.id}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
 
-          {swimmerEndurancePrograms.length > 0 && (
+          <div className="tab-panel">
+          {activeTab === 'results' && rankingRows}
+
+          {activeTab === 'endurance' && swimmerEndurancePrograms.length > 0 && (
             <section className="panel achievement-panel">
               <div className="section-heading">
                 <div>
@@ -802,7 +829,7 @@ export function App() {
             </section>
           )}
 
-          {swimmerEndurancePrograms.length === 0 && swimmerAchievements.length > 0 && (
+          {activeTab === 'endurance' && swimmerEndurancePrograms.length === 0 && swimmerAchievements.length > 0 && (
             <section className="panel achievement-panel">
               <div className="section-heading">
                 <div>
@@ -831,6 +858,19 @@ export function App() {
             </section>
           )}
 
+          {activeTab === 'endurance' && swimmerEndurancePrograms.length === 0 && swimmerAchievements.length === 0 && (
+            <section className="panel">
+              <div className="section-heading">
+                <div>
+                  <p className="eyebrow">Endurance</p>
+                  <h2>Endurance programs</h2>
+                </div>
+              </div>
+              <div className="inline-empty">No endurance program data is imported for this swimmer yet.</div>
+            </section>
+          )}
+
+          {activeTab === 'points' && (
           <section className="panel">
             <div className="section-heading">
               <div>
@@ -884,7 +924,9 @@ export function App() {
               ))}
             </div>
           </section>
+          )}
 
+          {activeTab === 'opportunities' && (
           <section className="panel opportunities-panel">
             <div className="section-heading">
               <div>
@@ -935,7 +977,9 @@ export function App() {
               </div>
             </div>
           </section>
+          )}
 
+          {activeTab === 'history' && (
           <section className="panel">
             <div className="section-heading">
               <div>
@@ -1003,7 +1047,9 @@ export function App() {
               <div className="inline-empty">No ranking snapshots or scored result history in this filtered view.</div>
             )}
           </section>
+          )}
 
+          {activeTab === 'competitions' && (
           <section className="panel">
             <div className="section-heading">
               <div>
@@ -1053,6 +1099,8 @@ export function App() {
                 ))}
             </div>
           </section>
+          )}
+          </div>
         </>
       )}
 
