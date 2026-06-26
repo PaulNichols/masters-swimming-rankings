@@ -261,7 +261,7 @@ export function App() {
     }, { improved: 0, dropped: 0 });
   }, [filteredSnapshots, selectedRankingScope]);
 
-  const bestEver = trends.find((trend) => trend.bestPlace != null);
+  const bestRankingInView = trends.find((trend) => trend.bestPlace != null);
 
   return (
     <main>
@@ -345,8 +345,8 @@ export function App() {
         <>
           <section className="stats-grid">
             <article>
-              <span>Best ever</span>
-              <strong>{bestEver ? `${ordinal(bestEver.bestPlace)} ${bestEver.label}` : 'n/a'}</strong>
+              <span>Best ranking in view</span>
+              <strong>{bestRankingInView ? `${ordinal(bestRankingInView.bestPlace)} ${bestRankingInView.label}` : 'n/a'}</strong>
             </article>
             <article>
               <span>Improved since prior run</span>
