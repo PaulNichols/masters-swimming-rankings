@@ -29,6 +29,10 @@ function normalizeAgeGroup(value: string): string {
   return `Men ${value.replace(/^Men\s+/i, '')}`;
 }
 
+function competitionYear(result: CompetitionResult): number {
+  return result.year ?? new Date(result.date).getFullYear();
+}
+
 function numericPoints(value: string | undefined): number | null {
   if (!value) {
     return null;
@@ -129,14 +133,47 @@ export function App() {
   const sortedSwimmers = [...store.swimmers].sort((a, b) => a.name.localeCompare(b.name));
   const swimmerSnapshots = store.snapshots.filter((snapshot) => snapshot.swimmerId === selectedSwimmer?.id);
   const swimmerCompetitions = store.competitions.filter((result) => result.swimmerId === selectedSwimmer?.id);
-  const years = [...new Set(swimmerCompetitions.map((result) => result.year ?? new Date(result.date).getFullYear()))]
+  const yearAgePairs = [
+    ...swimmerSnapshots.map((snapshot) => ({
+      year: new Date(snapshot.checkedAt).getFullYear(),
+      ageGroup: snapshot.ageGroup,
+    })),
+    ...swimmerCompetitions.map((result) => ({
+      year: competitionYear(result),
+      ageGroup: normalizeAgeGroup(result.ageGroup),
+    })),
+  ];
+  const years = [...new Set(yearAgePairs.map((pair) => pair.year))]
     .sort((a, b) => b - a);
-  const ageGroups = [...new Set([
-    ...swimmerSnapshots.map((snapshot) => snapshot.ageGroup),
-    ...swimmerCompetitions.map((result) => normalizeAgeGroup(result.ageGroup)),
-  ])].sort();
+  const ageGroups = [...new Set(yearAgePairs.map((pair) => pair.ageGroup))].sort();
+  const yearOptions = selectedAgeGroup === 'all'
+    ? years
+    : [...new Set(yearAgePairs.filter((pair) => pair.ageGroup === selectedAgeGroup).map((pair) => pair.year))].sort((a, b) => b - a);
+  const ageGroupOptions = selectedYear === 'all'
+    ? ageGroups
+    : [...new Set(yearAgePairs.filter((pair) => String(pair.year) === selectedYear).map((pair) => pair.ageGroup))].sort();
+  const hasYearAgeData = (year: string, ageGroupValue: string): boolean => (
+    (year === 'all' || years.includes(Number(year)))
+    && (ageGroupValue === 'all' || ageGroups.includes(ageGroupValue))
+    && (year === 'all' || ageGroupValue === 'all' || yearAgePairs.some((pair) => String(pair.year) === year && pair.ageGroup === ageGroupValue))
+  );
+  const bestAgeGroupForYear = (year: string): string => {
+    const currentAgeGroup = currentAgeGroupFor(store, selectedSwimmerId);
+    const options = year === 'all'
+      ? ageGroups
+      : [...new Set(yearAgePairs.filter((pair) => String(pair.year) === year).map((pair) => pair.ageGroup))].sort();
+
+    return options.includes(currentAgeGroup) ? currentAgeGroup : options[0] ?? 'all';
+  };
+
+  useEffect(() => {
+    if (!hasYearAgeData(selectedYear, selectedAgeGroup)) {
+      setSelectedAgeGroup(bestAgeGroupForYear(selectedYear));
+    }
+  });
+
   const filteredCompetitions = swimmerCompetitions
-    .filter((result) => selectedYear === 'all' || String(result.year ?? new Date(result.date).getFullYear()) === selectedYear)
+    .filter((result) => selectedYear === 'all' || String(competitionYear(result)) === selectedYear)
     .filter((result) => selectedAgeGroup === 'all' || normalizeAgeGroup(result.ageGroup) === selectedAgeGroup)
     .sort((a, b) => b.date.localeCompare(a.date) || a.event.localeCompare(b.event));
   const filteredSnapshots = swimmerSnapshots
@@ -252,18 +289,32 @@ export function App() {
             </label>
             <label className="field compact">
               <span>Year</span>
-              <select value={selectedYear} onChange={(event) => setSelectedYear(event.target.value)}>
+              <select value={selectedYear} onChange={(event) => {
+                const nextYear = event.target.value;
+                setSelectedYear(nextYear);
+
+                if (!hasYearAgeData(nextYear, selectedAgeGroup)) {
+                  setSelectedAgeGroup(bestAgeGroupForYear(nextYear));
+                }
+              }}>
                 <option value="all">All years</option>
-                {years.map((year) => (
+                {yearOptions.map((year) => (
                   <option key={year} value={year}>{year}</option>
                 ))}
               </select>
             </label>
             <label className="field compact">
               <span>Age group</span>
-              <select value={selectedAgeGroup} onChange={(event) => setSelectedAgeGroup(event.target.value)}>
+              <select value={selectedAgeGroup} onChange={(event) => {
+                const nextAgeGroup = event.target.value;
+                setSelectedAgeGroup(nextAgeGroup);
+
+                if (!hasYearAgeData(selectedYear, nextAgeGroup)) {
+                  setSelectedYear('all');
+                }
+              }}>
                 <option value="all">All age groups</option>
-                {ageGroups.map((group) => (
+                {ageGroupOptions.map((group) => (
                   <option key={group} value={group}>{group}</option>
                 ))}
               </select>
