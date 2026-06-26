@@ -124,9 +124,9 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    setSelectedCompetitionName('all');
-    setSelectedCompetitionCourse('all');
-    setSelectedCompetitionEvent('all');
+    setSelectedCompetitionName('');
+    setSelectedCompetitionCourse('');
+    setSelectedCompetitionEvent('');
   }, [selectedSwimmerId, selectedYear, selectedAgeGroup]);
 
   const selectedSwimmer = store.swimmers.find((swimmer) => swimmer.id === selectedSwimmerId) ?? store.swimmers[0];
@@ -187,16 +187,20 @@ export function App() {
   const competitionNames = [...new Set(filteredCompetitions.map((result) => result.competition))].sort();
   const competitionCourses = [...new Set(filteredCompetitions.map((result) => result.course))].sort();
   const competitionEvents = [...new Set(filteredCompetitions.map((result) => result.event))].sort();
-  const competitionResults = filteredCompetitions
-    .filter((result) => selectedCompetitionName === 'all' || result.competition === selectedCompetitionName)
-    .filter((result) => selectedCompetitionCourse === 'all' || result.course === selectedCompetitionCourse)
-    .filter((result) => selectedCompetitionEvent === 'all' || result.event === selectedCompetitionEvent);
+  const hasCompetitionFilter = Boolean(selectedCompetitionName || selectedCompetitionCourse || selectedCompetitionEvent);
+  const competitionResults = hasCompetitionFilter
+    ? filteredCompetitions
+      .filter((result) => !selectedCompetitionName || result.competition === selectedCompetitionName)
+      .filter((result) => !selectedCompetitionCourse || result.course === selectedCompetitionCourse)
+      .filter((result) => !selectedCompetitionEvent || result.event === selectedCompetitionEvent)
+    : [];
   const competitionGroups = summarizeCompetitions(competitionResults);
-  const ageGroup = latest?.ageGroup ?? selectedSwimmer?.ageGroups[0] ?? 'No age group yet';
+  const currentAgeGroup = currentAgeGroupFor(store, selectedSwimmerId);
+  const displayAgeGroup = selectedAgeGroup === 'all' ? currentAgeGroup : selectedAgeGroup;
 
   const allPointResults = pointResults(swimmerCompetitions);
   const filteredPointResults = pointResults(filteredCompetitions);
-  const currentAgePointResults = allPointResults.filter((item) => normalizeAgeGroup(item.result.ageGroup) === ageGroup);
+  const currentAgePointResults = allPointResults.filter((item) => normalizeAgeGroup(item.result.ageGroup) === currentAgeGroup);
   const bestPointResult = [...allPointResults].sort((a, b) => b.points - a.points)[0];
   const latestPointResult = [...allPointResults].sort((a, b) => b.result.date.localeCompare(a.result.date))[0];
   const latestMeetPointResults = latestPointResult
@@ -272,7 +276,8 @@ export function App() {
           <div>
             <p className="eyebrow">Masters Swimming Rankings</p>
             <h1>{selectedSwimmer?.name ?? 'No swimmer selected'}</h1>
-            <p className="subtle">{selectedSwimmer?.club ?? 'Add a swimmer to start tracking'} · {ageGroup} · Data refreshed {formatDate(store.updatedAt)}</p>
+            <p className="subtle">{selectedSwimmer?.club ?? 'Add a swimmer to start tracking'} · {displayAgeGroup}</p>
+            <p className="subtle refresh-date">Data refreshed {formatDate(store.updatedAt)}</p>
           </div>
           <div className="top-controls">
             <label className="field">
@@ -344,14 +349,6 @@ export function App() {
               <strong>{bestEver ? `${ordinal(bestEver.bestPlace)} ${bestEver.label}` : 'n/a'}</strong>
             </article>
             <article>
-              <span>Average point score</span>
-              <strong>{formatPoints(averagePoints)}</strong>
-            </article>
-            <article>
-              <span>Best point score</span>
-              <strong>{bestPointResult ? `${bestPointResult.points} ${bestPointResult.result.course} ${bestPointResult.result.event}` : 'n/a'}</strong>
-            </article>
-            <article>
               <span>Improved since prior run</span>
               <strong>{latestMovement.improved}</strong>
             </article>
@@ -378,7 +375,7 @@ export function App() {
               <article>
                 <span>Current age/sex average</span>
                 <strong>{formatPoints(currentAgeAveragePoints)}</strong>
-                <p>{ageGroup}</p>
+                <p>{currentAgeGroup}</p>
               </article>
               <article>
                 <span>Filtered average</span>
@@ -479,61 +476,46 @@ export function App() {
             </div>
           </section>
 
-          <section className="panel two-column">
-            <div>
-              <div className="section-heading">
-                <div>
-                  <p className="eyebrow">Progress</p>
-                  <h2>Times by event</h2>
-                </div>
+          <section className="panel">
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">Competitions</p>
+                <h2>Placings and medals</h2>
               </div>
-              <div className="time-table">
-                {trends.filter((trend) => trend.bestTimeSeconds != null).map((trend) => (
-                  <div key={trend.key}>
-                    <span>{trend.label}</span>
-                    <strong>{formatSeconds(trend.bestTimeSeconds)}</strong>
-                  </div>
-                ))}
+              <div className="section-controls">
+                <label className="field compact">
+                  <span>Competition</span>
+                  <select value={selectedCompetitionName} onChange={(event) => setSelectedCompetitionName(event.target.value)}>
+                    <option value="">Select competition</option>
+                    {competitionNames.map((competition) => (
+                      <option key={competition} value={competition}>{competition}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="field compact">
+                  <span>Course</span>
+                  <select value={selectedCompetitionCourse} onChange={(event) => setSelectedCompetitionCourse(event.target.value)}>
+                    <option value="">Select course</option>
+                    {competitionCourses.map((course) => (
+                      <option key={course} value={course}>{course}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="field compact">
+                  <span>Event</span>
+                  <select value={selectedCompetitionEvent} onChange={(event) => setSelectedCompetitionEvent(event.target.value)}>
+                    <option value="">Select event</option>
+                    {competitionEvents.map((eventName) => (
+                      <option key={eventName} value={eventName}>{eventName}</option>
+                    ))}
+                  </select>
+                </label>
               </div>
             </div>
-            <div>
-              <div className="section-heading">
-                <div>
-                  <p className="eyebrow">Competitions</p>
-                  <h2>Placings and medals</h2>
-                </div>
-                <div className="section-controls">
-                  <label className="field compact">
-                    <span>Competition</span>
-                    <select value={selectedCompetitionName} onChange={(event) => setSelectedCompetitionName(event.target.value)}>
-                      <option value="all">All competitions</option>
-                      {competitionNames.map((competition) => (
-                        <option key={competition} value={competition}>{competition}</option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="field compact">
-                    <span>Course</span>
-                    <select value={selectedCompetitionCourse} onChange={(event) => setSelectedCompetitionCourse(event.target.value)}>
-                      <option value="all">All courses</option>
-                      {competitionCourses.map((course) => (
-                        <option key={course} value={course}>{course}</option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="field compact">
-                    <span>Event</span>
-                    <select value={selectedCompetitionEvent} onChange={(event) => setSelectedCompetitionEvent(event.target.value)}>
-                      <option value="all">All events</option>
-                      {competitionEvents.map((eventName) => (
-                        <option key={eventName} value={eventName}>{eventName}</option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
-              </div>
-              <div className="competition-list">
-                {[...competitionGroups.entries()].map(([key, results]) => (
+            <div className="competition-list">
+              {!hasCompetitionFilter ? (
+                <div className="inline-empty">Select a competition, course, or event to show results.</div>
+              ) : [...competitionGroups.entries()].map(([key, results]) => (
                   <article key={key}>
                     <strong>{key}</strong>
                     {results.map((result) => (
@@ -541,36 +523,6 @@ export function App() {
                     ))}
                   </article>
                 ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="panel">
-            <div className="section-heading">
-              <div>
-                <p className="eyebrow">Official MSARC history</p>
-                <h2>Previous years and age groups</h2>
-              </div>
-            </div>
-            <div className="history-table">
-              <div className="history-head">
-                <span>Date</span>
-                <span>Age</span>
-                <span>Event</span>
-                <span>Time</span>
-                <span>Points</span>
-                <span>Location</span>
-              </div>
-              {filteredCompetitions.map((result) => (
-                <div key={result.id}>
-                  <span>{formatDate(result.date)}</span>
-                  <span>{normalizeAgeGroup(result.ageGroup)}</span>
-                  <span>{result.course} {result.event}</span>
-                  <strong>{result.time || 'n/a'}</strong>
-                  <span>{result.points ?? '-'}</span>
-                  <span>{result.location ?? result.competition}</span>
-                </div>
-              ))}
             </div>
           </section>
         </>

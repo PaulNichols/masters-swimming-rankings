@@ -12,9 +12,10 @@
 
 body {
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.52) 0 2px, transparent 2px 96px),
-    linear-gradient(180deg, rgba(38, 154, 188, 0.16), rgba(244, 240, 232, 0.92) 380px),
-    #e8f5f7;
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.78) 0 5px, transparent 6px 100px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.44) 0 2px, transparent 2px 118px),
+    repeating-linear-gradient(180deg, rgba(5, 128, 158, 0.12) 0 1px, transparent 1px 22px),
+    linear-gradient(180deg, #bfeaf1 0, #e8f5f7 310px, #f4f0e8 100%);
   margin: 0;
   min-width: 320px;
 }
@@ -34,10 +35,12 @@ main {
 }
 
 .top-shell {
-  background: rgba(252, 250, 246, 0.96);
-  border: 1px solid #b9d7d6;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 253, 252, 0.96)),
+    repeating-linear-gradient(90deg, rgba(12, 126, 154, 0.06) 0 1px, transparent 1px 88px);
+  border: 1px solid #9bcfcc;
   border-radius: 8px;
-  box-shadow: 0 18px 48px rgba(23, 75, 88, 0.12);
+  box-shadow: 0 18px 48px rgba(13, 90, 113, 0.18);
   min-width: 0;
   overflow: hidden;
 }
@@ -45,8 +48,9 @@ main {
 .pool-visual {
   align-items: stretch;
   background:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.24) 0 2px, transparent 2px 15px),
-    linear-gradient(90deg, #0a8ea0, #1f7ae0 55%, #f0b94c);
+    radial-gradient(circle at 14px 14px, rgba(255, 255, 255, 0.72) 0 3px, transparent 4px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.26) 0 2px, transparent 2px 13px),
+    linear-gradient(90deg, #0588a1, #1f7ae0 55%, #f0b94c);
   display: grid;
   gap: 8px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -56,7 +60,7 @@ main {
 
 .pool-visual span {
   background:
-    repeating-linear-gradient(90deg, #ffffff 0 10px, #e23636 10px 16px, #ffffff 16px 26px, #1e63c7 26px 34px),
+    repeating-linear-gradient(90deg, #ffffff 0 11px, #d92d32 11px 17px, #ffffff 17px 28px, #164fa8 28px 36px),
     rgba(255, 255, 255, 0.45);
   border-radius: 4px;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34);
@@ -109,6 +113,10 @@ h2 {
   color: #62706c;
 }
 
+.refresh-date {
+  margin-top: 4px;
+}
+
 .field {
   display: grid;
   gap: 6px;
@@ -130,7 +138,8 @@ button,
 }
 
 select {
-  background: #ffffff;
+  background:
+    linear-gradient(180deg, #ffffff, #f7fcfb);
   padding: 0 12px;
 }
 
@@ -160,9 +169,23 @@ button:hover {
 .stats-grid article,
 .panel,
 .empty-state {
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid #c8ddd8;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 254, 253, 0.98));
+  border: 1px solid #b8dcd8;
   border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(14, 91, 112, 0.08);
+  position: relative;
+}
+
+.stats-grid article::before,
+.panel::before,
+.empty-state::before {
+  background: linear-gradient(90deg, #0588a1, #1f7ae0 55%, #f0b94c);
+  border-radius: 8px 8px 0 0;
+  content: "";
+  height: 3px;
+  inset: 0 0 auto;
+  position: absolute;
 }
 
 .stats-grid article {
@@ -176,9 +199,7 @@ button:hover {
 .trend-meta,
 .rank-row span,
 .gap,
-.competition-list p,
-.time-table span,
-.history-table span {
+.competition-list p {
   color: #61706b;
   font-size: 0.88rem;
 }
@@ -196,8 +217,9 @@ button:hover {
 }
 
 .point-grid article {
-  background: #f8f6f1;
-  border: 1px solid #e4ded2;
+  background:
+    linear-gradient(180deg, #f7fbfa, #ffffff);
+  border: 1px solid #d0e6e2;
   border-radius: 6px;
   display: grid;
   gap: 6px;
@@ -285,7 +307,9 @@ button:hover {
 
 .rank-row {
   align-items: center;
-  background: #f7fbfa;
+  background:
+    linear-gradient(90deg, rgba(8, 124, 137, 0.08), rgba(255, 255, 255, 0.88) 42%),
+    #f7fbfa;
   border: 1px solid #d7e8e5;
   border-radius: 6px;
   display: grid;
@@ -323,7 +347,8 @@ button:hover {
 }
 
 .trend-card {
-  background: #fbfefd;
+  background:
+    linear-gradient(180deg, #fbfefd, #f6fbfa);
   border: 1px solid #d7e8e5;
   border-radius: 8px;
   padding: 12px;
@@ -354,7 +379,7 @@ button:hover {
 }
 
 .trend-chart line {
-  stroke: #ddd4c5;
+  stroke: #c9e0dc;
   stroke-width: 1;
 }
 
@@ -384,7 +409,9 @@ button:hover {
 
 .empty-chart {
   align-items: center;
-  background: #f7fbfa;
+  background:
+    repeating-linear-gradient(90deg, rgba(5, 136, 161, 0.08) 0 1px, transparent 1px 54px),
+    #f7fbfa;
   border-radius: 6px;
   color: #66736f;
   display: flex;
@@ -392,21 +419,13 @@ button:hover {
   justify-content: center;
 }
 
-.two-column {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: 1fr 1fr;
-}
-
-.time-table,
 .competition-list {
   display: grid;
   gap: 10px;
 }
 
-.time-table div,
 .competition-list article {
-  border-bottom: 1px solid #e7dfd2;
+  border-bottom: 1px solid #d6e8e4;
   display: grid;
   gap: 4px;
   padding-bottom: 10px;
@@ -416,30 +435,14 @@ button:hover {
   margin: 0;
 }
 
-.history-table {
-  display: grid;
-  gap: 6px;
-  overflow-x: auto;
-}
-
-.history-head,
-.history-table > div {
-  align-items: center;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 110px 90px minmax(190px, 1.2fr) 90px 70px minmax(150px, 1fr);
-  min-width: 760px;
-}
-
-.history-head {
-  border-bottom: 1px solid #d8d1c5;
-  font-weight: 800;
-  padding: 0 0 8px;
-}
-
-.history-table > div:not(.history-head) {
-  border-bottom: 1px solid #eee7dc;
-  padding: 8px 0;
+.inline-empty {
+  background:
+    repeating-linear-gradient(90deg, rgba(5, 136, 161, 0.08) 0 1px, transparent 1px 54px),
+    #f7fbfa;
+  border: 1px dashed #a7cbc8;
+  border-radius: 6px;
+  color: #61706b;
+  padding: 18px;
 }
 
 .empty-state {
@@ -465,8 +468,7 @@ button:hover {
 
   .stats-grid,
   .point-grid,
-  .trend-grid,
-  .two-column {
+  .trend-grid {
     grid-template-columns: 1fr;
   }
 
