@@ -293,10 +293,6 @@ export function App() {
               <strong>{bestEver ? `${ordinal(bestEver.bestPlace)} ${bestEver.label}` : 'n/a'}</strong>
             </article>
             <article>
-              <span>Current listed events</span>
-              <strong>{currentEntries.filter((entry) => entry.place != null).length}</strong>
-            </article>
-            <article>
               <span>Average point score</span>
               <strong>{formatPoints(averagePoints)}</strong>
             </article>
