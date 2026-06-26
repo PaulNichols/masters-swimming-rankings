@@ -149,9 +149,7 @@ export function App() {
   const yearOptions = selectedAgeGroup === 'all'
     ? years
     : [...new Set(yearAgePairs.filter((pair) => pair.ageGroup === selectedAgeGroup).map((pair) => pair.year))].sort((a, b) => b - a);
-  const ageGroupOptions = selectedYear === 'all'
-    ? ageGroups
-    : [...new Set(yearAgePairs.filter((pair) => String(pair.year) === selectedYear).map((pair) => pair.ageGroup))].sort();
+  const ageGroupOptions = ageGroups;
   const hasYearAgeData = (year: string, ageGroupValue: string): boolean => (
     (year === 'all' || years.includes(Number(year)))
     && (ageGroupValue === 'all' || ageGroups.includes(ageGroupValue))
