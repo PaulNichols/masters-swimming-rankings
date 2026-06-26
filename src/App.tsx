@@ -554,7 +554,7 @@ export function App() {
     return byCourse(
       [...latestByEvent.values()].sort((a, b) => a.points - b.points || a.event.localeCompare(b.event)),
       2,
-    );
+    ).sort((a, b) => (b.gapToAverage ?? -1) - (a.gapToAverage ?? -1) || a.points - b.points || a.event.localeCompare(b.event));
   }, [filteredPointResults, filteredAveragePoints]);
 
   const rankingOpportunities = useMemo(() => byCourse(
