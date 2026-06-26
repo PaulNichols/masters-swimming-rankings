@@ -22,6 +22,13 @@ type RankingOpportunity = RankingEntry & {
   course: 'LC' | 'SC';
 };
 
+type ShareParams = {
+  swimmerId?: string;
+  year?: string;
+  ageGroup?: string;
+  rankingScope?: string;
+};
+
 type ResultTrend = {
   key: string;
   label: string;
@@ -89,6 +96,21 @@ function normalizeAgeGroup(value: string): string {
   return `Men ${value.replace(/^Men\s+/i, '')}`;
 }
 
+function readShareParams(): ShareParams {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
+  const params = new URLSearchParams(window.location.search);
+
+  return {
+    swimmerId: params.get('swimmer') ?? undefined,
+    year: params.get('year') ?? undefined,
+    ageGroup: params.get('age') ?? undefined,
+    rankingScope: params.get('region') ?? undefined,
+  };
+}
+
 function competitionYear(result: CompetitionResult): number {
   return result.year ?? new Date(result.date).getFullYear();
 }
@@ -149,6 +171,67 @@ function currentAgeGroupFor(store: RankingsStore, swimmerId: string): string {
   const swimmer = store.swimmers.find((item) => item.id === swimmerId);
 
   return latest?.ageGroup ?? swimmer?.ageGroups.at(-1) ?? 'all';
+}
+
+function ageGroupsFor(store: RankingsStore, swimmerId: string): string[] {
+  return [...new Set([
+    ...store.snapshots
+      .filter((snapshot) => snapshot.swimmerId === swimmerId)
+      .map((snapshot) => snapshot.ageGroup),
+    ...store.competitions
+      .filter((result) => result.swimmerId === swimmerId)
+      .map((result) => normalizeAgeGroup(result.ageGroup)),
+    ...(store.swimmers.find((swimmer) => swimmer.id === swimmerId)?.ageGroups ?? []),
+  ])];
+}
+
+function resolveShareParams(store: RankingsStore, params: ShareParams) {
+  const swimmerId = store.swimmers.some((swimmer) => swimmer.id === params.swimmerId)
+    ? params.swimmerId!
+    : store.swimmers[0]?.id ?? '';
+  const groups = ageGroupsFor(store, swimmerId);
+  const ageGroup = params.ageGroup === 'all' || groups.includes(params.ageGroup ?? '')
+    ? params.ageGroup!
+    : currentAgeGroupFor(store, swimmerId);
+  const year = params.year === 'all' || /^\d{4}$/.test(params.year ?? '') ? params.year! : 'all';
+  const rankingScope = ['all', 'Queensland', 'Australia'].includes(params.rankingScope ?? '') ? params.rankingScope! : 'all';
+
+  return {
+    swimmerId,
+    year,
+    ageGroup,
+    rankingScope,
+  };
+}
+
+function shareUrlFor(swimmerId: string, year: string, ageGroup: string, rankingScope: string): string {
+  if (typeof window === 'undefined') {
+    return '';
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set('swimmer', swimmerId);
+  url.searchParams.set('year', year);
+  url.searchParams.set('age', ageGroup);
+  url.searchParams.set('region', rankingScope);
+  return url.toString();
+}
+
+async function copyText(value: string): Promise<void> {
+  if (navigator.clipboard) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = value;
+  textarea.setAttribute('readonly', 'true');
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.append(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  textarea.remove();
 }
 
 function TrendChart({ entries }: { entries: Array<RankingEntry & { checkedAt: string }> }) {
@@ -229,27 +312,32 @@ function PointsChart({ entries }: { entries: ResultTrend['entries'] }) {
 
 export function App() {
   const rankingPageSize = 10;
-  const initialSwimmerId = seedStore.swimmers[0]?.id ?? '';
+  const [initialShareParams] = useState(() => readShareParams());
+  const initialSharedView = resolveShareParams(seedStore, initialShareParams);
+  const initialSwimmerId = initialSharedView.swimmerId;
   const [store, setStore] = useState<RankingsStore>(() => seedStore);
   const [selectedSwimmerId, setSelectedSwimmerId] = useState(initialSwimmerId);
-  const [selectedYear, setSelectedYear] = useState('all');
-  const [selectedAgeGroup, setSelectedAgeGroup] = useState(() => currentAgeGroupFor(seedStore, initialSwimmerId));
-  const [selectedRankingScope, setSelectedRankingScope] = useState('all');
+  const [selectedYear, setSelectedYear] = useState(initialSharedView.year);
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState(initialSharedView.ageGroup);
+  const [selectedRankingScope, setSelectedRankingScope] = useState(initialSharedView.rankingScope);
   const [selectedCompetitionName, setSelectedCompetitionName] = useState('all');
   const [selectedCompetitionCourse, setSelectedCompetitionCourse] = useState('all');
   const [selectedCompetitionEvent, setSelectedCompetitionEvent] = useState('all');
   const [rankingPage, setRankingPage] = useState(1);
+  const [shareStatus, setShareStatus] = useState('Copy link');
 
   useEffect(() => {
     loadGitHubData()
       .then((githubStore) => {
-        const nextSwimmerId = githubStore.swimmers[0]?.id ?? '';
+        const nextSharedView = resolveShareParams(githubStore, initialShareParams);
         setStore(githubStore);
-        setSelectedSwimmerId(nextSwimmerId);
-        setSelectedAgeGroup(currentAgeGroupFor(githubStore, nextSwimmerId));
+        setSelectedSwimmerId(nextSharedView.swimmerId);
+        setSelectedYear(nextSharedView.year);
+        setSelectedAgeGroup(nextSharedView.ageGroup);
+        setSelectedRankingScope(nextSharedView.rankingScope);
       })
       .catch(() => undefined);
-  }, []);
+  }, [initialShareParams]);
 
   useEffect(() => {
     setSelectedCompetitionName('');
@@ -260,6 +348,22 @@ export function App() {
   useEffect(() => {
     setRankingPage(1);
   }, [selectedSwimmerId, selectedYear, selectedAgeGroup, selectedRankingScope]);
+
+  const shareUrl = useMemo(
+    () => shareUrlFor(selectedSwimmerId, selectedYear, selectedAgeGroup, selectedRankingScope),
+    [selectedSwimmerId, selectedYear, selectedAgeGroup, selectedRankingScope],
+  );
+
+  useEffect(() => {
+    setShareStatus('Copy link');
+
+    if (!shareUrl) {
+      return;
+    }
+
+    const url = new URL(shareUrl);
+    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+  }, [shareUrl]);
 
   const selectedSwimmer = store.swimmers.find((swimmer) => swimmer.id === selectedSwimmerId) ?? store.swimmers[0];
   const sortedSwimmers = [...store.swimmers].sort((a, b) => a.name.localeCompare(b.name));
@@ -488,6 +592,14 @@ export function App() {
   }, [filteredSnapshots, selectedRankingScope]);
 
   const bestRankingInView = trends.find((trend) => trend.bestPlace != null);
+  const copyShareLink = async () => {
+    try {
+      await copyText(shareUrl);
+      setShareStatus('Copied');
+    } catch {
+      setShareStatus('Copy failed');
+    }
+  };
   const rankingRows = (
     <section className="panel rankings-panel">
       <div className="section-heading">
@@ -614,6 +726,10 @@ export function App() {
                 <option value="Australia">National</option>
               </select>
             </label>
+            <div className="share-control">
+              <span>Share</span>
+              <button type="button" onClick={copyShareLink}>{shareStatus}</button>
+            </div>
           </div>
         </div>
       </section>

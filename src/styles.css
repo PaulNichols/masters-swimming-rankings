@@ -129,6 +129,18 @@ h2 {
   font-weight: 700;
 }
 
+.share-control {
+  display: grid;
+  gap: 6px;
+  min-width: 120px;
+}
+
+.share-control span {
+  color: #52605c;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 select,
 button,
 .button-like {
