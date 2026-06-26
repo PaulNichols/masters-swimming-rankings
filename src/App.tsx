@@ -621,6 +621,20 @@ export function App() {
           </div>
         )}
       </div>
+      <div className="ranking-summary-grid">
+        <article>
+          <span>Best ranking in view</span>
+          <strong>{bestRankingInView ? `${ordinal(bestRankingInView.bestPlace)} ${bestRankingInView.label}` : 'n/a'}</strong>
+        </article>
+        <article>
+          <span>Improved since prior run</span>
+          <strong>{latestMovement.improved}</strong>
+        </article>
+        <article>
+          <span>Dropped since prior run</span>
+          <strong>{latestMovement.dropped}</strong>
+        </article>
+      </div>
       <div className="rank-list">
         {currentEntries.length ? pagedCurrentEntries.map((entry) => {
           const entryPointResult = allPointResults.find((item) => (
@@ -741,21 +755,6 @@ export function App() {
         </section>
       ) : (
         <>
-          <section className="stats-grid">
-            <article>
-              <span>Best ranking in view</span>
-              <strong>{bestRankingInView ? `${ordinal(bestRankingInView.bestPlace)} ${bestRankingInView.label}` : 'n/a'}</strong>
-            </article>
-            <article>
-              <span>Improved since prior run</span>
-              <strong>{latestMovement.improved}</strong>
-            </article>
-            <article>
-              <span>Dropped since prior run</span>
-              <strong>{latestMovement.dropped}</strong>
-            </article>
-          </section>
-
           {rankingRows}
 
           {swimmerEndurancePrograms.length > 0 && (

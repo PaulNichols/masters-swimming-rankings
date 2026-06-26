@@ -172,13 +172,6 @@ button:hover {
   border-color: #0f766e;
 }
 
-.stats-grid {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
-}
-
-.stats-grid article,
 .panel,
 .empty-state {
   background:
@@ -189,7 +182,6 @@ button:hover {
   position: relative;
 }
 
-.stats-grid article::before,
 .panel::before,
 .empty-state::before {
   background: linear-gradient(90deg, #0588a1, #1f7ae0 55%, #f0b94c);
@@ -200,14 +192,6 @@ button:hover {
   position: absolute;
 }
 
-.stats-grid article {
-  display: grid;
-  gap: 10px;
-  min-height: 108px;
-  padding: 16px;
-}
-
-.stats-grid span,
 .trend-meta,
 .rank-row span,
 .gap,
@@ -216,8 +200,31 @@ button:hover {
   font-size: 0.88rem;
 }
 
-.stats-grid strong {
-  font-size: 1.25rem;
+.ranking-summary-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 14px;
+}
+
+.ranking-summary-grid article {
+  background:
+    linear-gradient(180deg, #f7fbfa, #ffffff);
+  border: 1px solid #d0e6e2;
+  border-radius: 6px;
+  display: grid;
+  gap: 8px;
+  min-height: 86px;
+  padding: 12px;
+}
+
+.ranking-summary-grid span {
+  color: #61706b;
+  font-size: 0.86rem;
+}
+
+.ranking-summary-grid strong {
+  font-size: 1.12rem;
   line-height: 1.2;
 }
 
@@ -643,7 +650,7 @@ button:hover {
     min-width: 0;
   }
 
-  .stats-grid,
+  .ranking-summary-grid,
   .point-grid,
   .opportunity-grid,
   .trend-grid {
