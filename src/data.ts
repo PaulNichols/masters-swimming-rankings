@@ -1,0 +1,225 @@
+import type { CompetitionResult, RankingEntry, RankingSnapshot, RankingsStore, Swimmer } from './types';
+
+const source = 'Official MSARC ranking portal; World Aquatics public Masters Top 10 checked where noted.';
+
+const currentGaps: Record<string, Pick<RankingEntry, 'aheadName' | 'aheadTime' | 'gapSeconds'>> = {
+  'Queensland|LC|50m Butterfly': { aheadName: 'BRYCE ANDERSON', aheadTime: '28.73', gapSeconds: 3.29 },
+  'Australia|LC|400m Backstroke': { aheadName: 'MATTHEW CRANLEY', aheadTime: '6:08.16', gapSeconds: 27.28 },
+  'Australia|LC|400m Freestyle': { aheadName: 'CHRISTOPHER VELLIARIS', aheadTime: '5:15.05', gapSeconds: 4.9 },
+  'Australia|LC|100m Butterfly': { aheadName: 'JASON BUCKNER', aheadTime: '1:12.98', gapSeconds: 7.44 },
+  'Australia|LC|200m Individual Medley': { aheadName: 'GLEN CHILD', aheadTime: '2:48.82', gapSeconds: 3.76 },
+  'Australia|SC|400m Individual Medley': { aheadName: 'JASON BUCKNER', aheadTime: '5:34.51', gapSeconds: 2.74 },
+  'Australia|SC|100m Butterfly': { aheadName: 'JAMES WATSON', aheadTime: '1:08.40', gapSeconds: 0.73 },
+  'Australia|SC|200m Individual Medley': { aheadName: 'BRADLEY HALICEK', aheadTime: '2:27.66', gapSeconds: 6.56 },
+  'Australia|SC|800m Freestyle': { aheadName: 'DAMIEN EYRE', aheadTime: '10:14.35', gapSeconds: 11.12 },
+  'Australia|SC|200m Freestyle': { aheadName: 'JUERGEN LANGFELDT', aheadTime: '2:22.73', gapSeconds: 2.17 },
+  'Australia|SC|400m Freestyle': { aheadName: 'CHRISTOPHER HILL', aheadTime: '4:55.66', gapSeconds: 1.7 },
+};
+
+const times: Record<string, Pick<RankingEntry, 'time' | 'seconds' | 'meet' | 'resultDate'>> = {
+  'LC|50m Butterfly': { time: '32.02', seconds: 32.02, meet: 'QMM Interclub', resultDate: '2026-02-21' },
+  'LC|100m Butterfly': { time: '1:20.42', seconds: 80.42, meet: 'QMM Interclub', resultDate: '2026-02-21' },
+  'LC|200m Individual Medley': { time: '2:52.58', seconds: 172.58, meet: 'QMM Interclub', resultDate: '2026-02-21' },
+  'LC|400m Freestyle': { time: '5:19.95', seconds: 319.95, meet: 'QMM Interclub', resultDate: '2026-02-21' },
+  'LC|400m Backstroke': { time: '6:35.44', seconds: 395.44, meet: 'Aerobics', resultDate: '2026-05-20' },
+  'LC|60MIN Freestyle': { time: '3700', seconds: 3700, meet: 'Aerobics', resultDate: '2026-02-15' },
+  'SC|100m Butterfly': { time: '1:09.13', seconds: 69.13, meet: 'Nationals', resultDate: '2026-05-01' },
+  'SC|200m Freestyle': { time: '2:24.90', seconds: 144.9, meet: 'Nationals', resultDate: '2026-04-29' },
+  'SC|400m Freestyle': { time: '4:57.36', seconds: 297.36, meet: 'Nationals', resultDate: '2026-04-29' },
+  'SC|800m Freestyle': { time: '10:25.47', seconds: 625.47, meet: 'Nationals', resultDate: '2026-05-02' },
+  'SC|200m Individual Medley': { time: '2:34.22', seconds: 154.22, meet: 'Nationals', resultDate: '2026-04-30' },
+  'SC|400m Individual Medley': { time: '5:37.25', seconds: 337.25, meet: 'Nationals', resultDate: '2026-04-28' },
+};
+
+function entry(scope: RankingEntry['scope'], course: RankingEntry['course'], event: string, place: number | null): RankingEntry {
+  const base = times[`${course}|${event}`] ?? {};
+  const gap = currentGaps[`${scope}|${course}|${event}`] ?? {};
+  return { scope, course, event, place, ...base, ...gap };
+}
+
+function snapshot(id: string, checkedAt: string, entries: RankingEntry[], notes?: string): RankingSnapshot {
+  return {
+    id,
+    swimmerId: 'paul-nichols',
+    checkedAt,
+    ageGroup: 'Men 50-54',
+    source,
+    entries,
+    notes,
+  };
+}
+
+const swimmers: Swimmer[] = [
+  {
+    id: 'paul-nichols',
+    name: 'Paul Nichols',
+    club: 'Brisbane Southside Masters / QSM',
+    ageGroups: ['Men 50-54'],
+  },
+  {
+    id: 'josh-hemelaar',
+    name: 'Josh Hemelaar',
+    club: 'Brisbane Southside Masters',
+    ageGroups: [],
+  },
+];
+
+const snapshots: RankingSnapshot[] = [
+  snapshot('2026-03-27', '2026-03-27T09:13:12+10:00', [
+    entry('Queensland', 'LC', '400m Freestyle', 1),
+    entry('Queensland', 'LC', '60MIN Freestyle', 1),
+    entry('Queensland', 'LC', '50m Butterfly', 1),
+    entry('Queensland', 'LC', '100m Butterfly', 1),
+    entry('Queensland', 'LC', '200m Individual Medley', 1),
+    entry('Australia', 'LC', '60MIN Freestyle', 1),
+    entry('Australia', 'LC', '400m Freestyle', 2),
+    entry('Australia', 'LC', '200m Individual Medley', 2),
+    entry('Australia', 'LC', '50m Butterfly', 3),
+    entry('Australia', 'LC', '100m Butterfly', 3),
+  ]),
+  snapshot('2026-04-13', '2026-04-13T08:52:58+10:00', [
+    entry('Queensland', 'LC', '400m Freestyle', 1),
+    entry('Queensland', 'LC', '60MIN Freestyle', 1),
+    entry('Queensland', 'LC', '50m Butterfly', 1),
+    entry('Queensland', 'LC', '100m Butterfly', 1),
+    entry('Queensland', 'LC', '200m Individual Medley', 1),
+    entry('Australia', 'LC', '60MIN Freestyle', 1),
+    entry('Australia', 'LC', '200m Individual Medley', 2),
+    entry('Australia', 'LC', '400m Freestyle', 3),
+    entry('Australia', 'LC', '100m Butterfly', 4),
+    entry('Australia', 'LC', '50m Butterfly', 6),
+  ]),
+  snapshot('2026-05-02', '2026-05-02T17:04:41+10:00', [
+    entry('Queensland', 'LC', '400m Freestyle', 1),
+    entry('Queensland', 'LC', '60MIN Freestyle', 1),
+    entry('Queensland', 'LC', '100m Butterfly', 1),
+    entry('Queensland', 'LC', '200m Individual Medley', 1),
+    entry('Queensland', 'LC', '50m Butterfly', 2),
+    entry('Australia', 'LC', '60MIN Freestyle', 1),
+    entry('Australia', 'LC', '400m Freestyle', 3),
+    entry('Australia', 'LC', '100m Butterfly', 4),
+    entry('Australia', 'LC', '200m Individual Medley', 5),
+    entry('Australia', 'SC', '400m Individual Medley', 3),
+    entry('Australia', 'SC', '200m Individual Medley', 4),
+    entry('Australia', 'SC', '100m Butterfly', 5),
+    entry('Australia', 'SC', '200m Freestyle', 5),
+    entry('Australia', 'SC', '800m Freestyle', 5),
+    entry('Australia', 'SC', '400m Freestyle', 6),
+  ]),
+  snapshot('2026-06-17', '2026-06-17T11:15:42+10:00', [
+    entry('Queensland', 'LC', '400m Freestyle', 1),
+    entry('Queensland', 'LC', '60MIN Freestyle', 1),
+    entry('Queensland', 'LC', '400m Backstroke', 1),
+    entry('Queensland', 'LC', '100m Butterfly', 1),
+    entry('Queensland', 'LC', '200m Individual Medley', 1),
+    entry('Queensland', 'LC', '50m Butterfly', 2),
+    entry('Australia', 'LC', '60MIN Freestyle', 1),
+    entry('Australia', 'LC', '400m Backstroke', 2),
+    entry('Australia', 'LC', '400m Freestyle', 3),
+    entry('Australia', 'LC', '100m Butterfly', 4),
+    entry('Australia', 'LC', '200m Individual Medley', 5),
+    entry('Australia', 'SC', '400m Individual Medley', 3),
+    entry('Australia', 'SC', '200m Individual Medley', 4),
+    entry('Australia', 'SC', '800m Freestyle', 5),
+    entry('Australia', 'SC', '100m Butterfly', 5),
+    entry('Australia', 'SC', '200m Freestyle', 6),
+    entry('Australia', 'SC', '400m Freestyle', 7),
+  ]),
+  snapshot('2026-06-20', '2026-06-20T13:15:22+10:00', [
+    entry('Queensland', 'LC', '100m Butterfly', 1),
+    entry('Queensland', 'LC', '200m Individual Medley', 1),
+    entry('Queensland', 'LC', '400m Backstroke', 1),
+    entry('Queensland', 'LC', '400m Freestyle', 1),
+    entry('Queensland', 'LC', '60MIN Freestyle', 1),
+    entry('Queensland', 'LC', '50m Butterfly', 2),
+    entry('Australia', 'LC', '60MIN Freestyle', 1),
+    entry('Australia', 'LC', '400m Backstroke', 2),
+    entry('Australia', 'LC', '400m Freestyle', 3),
+    entry('Australia', 'LC', '100m Butterfly', 4),
+    entry('Australia', 'LC', '200m Individual Medley', 5),
+    entry('Australia', 'SC', '400m Individual Medley', 3),
+    entry('Australia', 'SC', '100m Butterfly', 5),
+    entry('Australia', 'SC', '200m Individual Medley', 5),
+    entry('Australia', 'SC', '800m Freestyle', 5),
+    entry('Australia', 'SC', '200m Freestyle', 7),
+    entry('Australia', 'SC', '400m Freestyle', 9),
+  ], 'Drops recorded in Australia SC 200m IM, 200m Free, and 400m Free.'),
+  snapshot('2026-06-26', '2026-06-26T13:55:18+10:00', [
+    entry('Queensland', 'LC', '100m Butterfly', 1),
+    entry('Queensland', 'LC', '200m Individual Medley', 1),
+    entry('Queensland', 'LC', '400m Backstroke', 1),
+    entry('Queensland', 'LC', '400m Freestyle', 1),
+    entry('Queensland', 'LC', '60MIN Freestyle', 1),
+    entry('Queensland', 'LC', '50m Butterfly', 2),
+    entry('Australia', 'LC', '60MIN Freestyle', 1),
+    entry('Australia', 'LC', '400m Backstroke', 2),
+    entry('Australia', 'LC', '400m Freestyle', 3),
+    entry('Australia', 'LC', '100m Butterfly', 4),
+    entry('Australia', 'LC', '200m Individual Medley', 5),
+    entry('Australia', 'SC', '400m Individual Medley', 3),
+    entry('Australia', 'SC', '100m Butterfly', 5),
+    entry('Australia', 'SC', '200m Individual Medley', 5),
+    entry('Australia', 'SC', '800m Freestyle', 5),
+    entry('Australia', 'SC', '200m Freestyle', 7),
+    entry('Australia', 'SC', '400m Freestyle', 9),
+    { scope: 'World', course: 'World', event: 'Current 2026 ranking', place: null },
+  ], 'No official current 2026 World Aquatics Masters position listed.'),
+];
+
+const competitions: CompetitionResult[] = [
+  {
+    id: 'qmm-2026-400-free',
+    swimmerId: 'paul-nichols',
+    competition: 'QMM Interclub',
+    date: '2026-02-21',
+    ageGroup: 'Men 50-54',
+    event: '400m Freestyle',
+    course: 'LC',
+    time: '5:19.95',
+    placing: 'Ranking result: Queensland 1st, Australia 3rd',
+    medal: 'Unknown',
+  },
+  {
+    id: 'qmm-2026-100-fly',
+    swimmerId: 'paul-nichols',
+    competition: 'QMM Interclub',
+    date: '2026-02-21',
+    ageGroup: 'Men 50-54',
+    event: '100m Butterfly',
+    course: 'LC',
+    time: '1:20.42',
+    placing: 'Ranking result: Queensland 1st, Australia 4th',
+    medal: 'Unknown',
+  },
+  {
+    id: 'nationals-2026-400-im',
+    swimmerId: 'paul-nichols',
+    competition: 'Nationals',
+    date: '2026-04-28',
+    ageGroup: 'Men 50-54',
+    event: '400m Individual Medley',
+    course: 'SC',
+    time: '5:37.25',
+    placing: 'Ranking result: Australia 3rd',
+    medal: 'Unknown',
+  },
+  {
+    id: 'nationals-2026-400-free',
+    swimmerId: 'paul-nichols',
+    competition: 'Nationals',
+    date: '2026-04-29',
+    ageGroup: 'Men 50-54',
+    event: '400m Freestyle',
+    course: 'SC',
+    time: '4:57.36',
+    placing: 'Ranking result: Australia 9th',
+    medal: 'Unknown',
+  },
+];
+
+export const seedStore: RankingsStore = {
+  swimmers,
+  snapshots,
+  competitions,
+  updatedAt: '2026-06-26T13:55:18+10:00',
+};
