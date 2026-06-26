@@ -401,6 +401,29 @@ button:hover {
   min-width: 220px;
 }
 
+.pagination-controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.pagination-controls span {
+  color: #61706b;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.pagination-controls button {
+  min-height: 36px;
+}
+
+.pagination-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
 .rank-list {
   display: grid;
   gap: 8px;
@@ -589,6 +612,10 @@ button:hover {
 
   .achievement-list a {
     text-align: left;
+  }
+
+  .pagination-controls {
+    justify-content: flex-start;
   }
 
   .opportunity-list article {

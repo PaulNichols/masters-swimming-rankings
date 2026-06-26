@@ -196,6 +196,7 @@ function PointsChart({ entries }: { entries: ResultTrend['entries'] }) {
 }
 
 export function App() {
+  const rankingPageSize = 10;
   const initialSwimmerId = seedStore.swimmers[0]?.id ?? '';
   const [store, setStore] = useState<RankingsStore>(() => seedStore);
   const [selectedSwimmerId, setSelectedSwimmerId] = useState(initialSwimmerId);
@@ -205,6 +206,7 @@ export function App() {
   const [selectedCompetitionName, setSelectedCompetitionName] = useState('all');
   const [selectedCompetitionCourse, setSelectedCompetitionCourse] = useState('all');
   const [selectedCompetitionEvent, setSelectedCompetitionEvent] = useState('all');
+  const [rankingPage, setRankingPage] = useState(1);
 
   useEffect(() => {
     loadGitHubData()
@@ -222,6 +224,10 @@ export function App() {
     setSelectedCompetitionCourse('');
     setSelectedCompetitionEvent('');
   }, [selectedSwimmerId, selectedYear, selectedAgeGroup]);
+
+  useEffect(() => {
+    setRankingPage(1);
+  }, [selectedSwimmerId, selectedYear, selectedAgeGroup, selectedRankingScope]);
 
   const selectedSwimmer = store.swimmers.find((swimmer) => swimmer.id === selectedSwimmerId) ?? store.swimmers[0];
   const sortedSwimmers = [...store.swimmers].sort((a, b) => a.name.localeCompare(b.name));
@@ -361,6 +367,10 @@ export function App() {
       .sort((a, b) => (a.place ?? 99) - (b.place ?? 99) || scopeLabel(a).localeCompare(scopeLabel(b))),
     [latest, selectedRankingScope],
   );
+  const rankingPageCount = Math.max(1, Math.ceil(currentEntries.length / rankingPageSize));
+  const normalizedRankingPage = Math.min(rankingPage, rankingPageCount);
+  const rankingStartIndex = (normalizedRankingPage - 1) * rankingPageSize;
+  const pagedCurrentEntries = currentEntries.slice(rankingStartIndex, rankingStartIndex + rankingPageSize);
 
   const pointOpportunities = useMemo(() => {
     const weakestByEvent = new Map<string, PointOpportunity>();
@@ -446,9 +456,22 @@ export function App() {
           <p className="eyebrow">Rankings</p>
           <h2>Rankings in view</h2>
         </div>
+        {currentEntries.length > rankingPageSize && (
+          <div className="pagination-controls" aria-label="Rankings pagination">
+            <span>
+              {rankingStartIndex + 1}-{Math.min(rankingStartIndex + rankingPageSize, currentEntries.length)} of {currentEntries.length}
+            </span>
+            <button type="button" onClick={() => setRankingPage((page) => Math.max(1, page - 1))} disabled={normalizedRankingPage === 1}>
+              Previous
+            </button>
+            <button type="button" onClick={() => setRankingPage((page) => Math.min(rankingPageCount, page + 1))} disabled={normalizedRankingPage === rankingPageCount}>
+              Next
+            </button>
+          </div>
+        )}
       </div>
       <div className="rank-list">
-        {currentEntries.length ? currentEntries.map((entry) => {
+        {currentEntries.length ? pagedCurrentEntries.map((entry) => {
           const entryPointResult = allPointResults.find((item) => (
             item.result.course === entry.course
             && item.result.event === entry.event
