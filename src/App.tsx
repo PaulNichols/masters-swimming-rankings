@@ -22,6 +22,21 @@ type RankingOpportunity = RankingEntry & {
   course: 'LC' | 'SC';
 };
 
+type ResultTrend = {
+  key: string;
+  label: string;
+  entries: Array<{
+    date: string;
+    points: number;
+    time?: string;
+    seconds?: number;
+  }>;
+  bestPoints: number;
+  latestPoints: number;
+  bestTimeSeconds: number | null;
+  latestTimeSeconds: number | null;
+};
+
 function scopeLabel(entry: RankingEntry): string {
   if (entry.scope === 'World') {
     return 'World';
@@ -68,6 +83,23 @@ function average(values: number[]): number | null {
 
 function formatPoints(value: number | null | undefined): string {
   return value == null ? 'n/a' : Math.round(value).toString();
+}
+
+function resultSeconds(value: string | undefined): number | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const minutesMatch = value.match(/^(\d+):(\d+(?:\.\d+)?)$/);
+  if (minutesMatch) {
+    return Number(minutesMatch[1]) * 60 + Number(minutesMatch[2]);
+  }
+
+  if (/^\d+(?:\.\d+)?$/.test(value)) {
+    return Number(value);
+  }
+
+  return undefined;
 }
 
 function isPoolCourse(course: Course): course is 'LC' | 'SC' {
@@ -118,6 +150,45 @@ function TrendChart({ entries }: { entries: Array<RankingEntry & { checkedAt: st
           <circle cx={point.x} cy={point.y} r="5" />
           <text x={point.x} y={point.y - 10}>{ordinal(point.entry.place)}</text>
           <text className="date-label" x={point.x} y={dateY}>{compactChartDate(point.entry.checkedAt)}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function PointsChart({ entries }: { entries: ResultTrend['entries'] }) {
+  const ranked = [...entries].sort((a, b) => a.date.localeCompare(b.date));
+
+  if (ranked.length < 2) {
+    return <div className="empty-chart">One result recorded</div>;
+  }
+
+  const width = 380;
+  const height = 150;
+  const horizontalPad = 30;
+  const plotTop = 24;
+  const plotBottom = 108;
+  const dateY = 136;
+  const minPoints = Math.min(...ranked.map((entry) => entry.points));
+  const maxPoints = Math.max(...ranked.map((entry) => entry.points));
+  const range = Math.max(1, maxPoints - minPoints);
+  const chartPoints = ranked.map((entry, index) => {
+    const x = ranked.length === 1 ? width / 2 : (index / (ranked.length - 1)) * (width - horizontalPad * 2) + horizontalPad;
+    const y = plotBottom - ((entry.points - minPoints) / range) * (plotBottom - plotTop);
+    return { x, y, entry };
+  });
+  const path = chartPoints.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(' ');
+
+  return (
+    <svg className="trend-chart points-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Points trend chart">
+      <line x1={horizontalPad} y1={plotTop} x2={width - horizontalPad} y2={plotTop} />
+      <line x1={horizontalPad} y1={plotBottom} x2={width - horizontalPad} y2={plotBottom} />
+      <path d={path} />
+      {chartPoints.map((point) => (
+        <g key={`${point.entry.date}-${point.entry.points}-${point.entry.time}`}>
+          <circle cx={point.x} cy={point.y} r="5" />
+          <text x={point.x} y={point.y - 10}>{point.entry.points}</text>
+          <text className="date-label" x={point.x} y={dateY}>{compactChartDate(point.entry.date)}</text>
         </g>
       ))}
     </svg>
@@ -247,6 +318,42 @@ export function App() {
       latest: [...results].sort((a, b) => b.result.date.localeCompare(a.result.date))[0],
     }))
     .sort((a, b) => b.group.localeCompare(a.group));
+
+  const resultTrends = useMemo(() => {
+    const grouped = filteredPointResults.reduce((groups, item) => {
+      if (!isPoolCourse(item.result.course)) {
+        return groups;
+      }
+
+      const key = `${item.result.course}|${item.result.event}`;
+      groups.set(key, [...(groups.get(key) ?? []), item]);
+      return groups;
+    }, new Map<string, PointResult[]>());
+
+    return [...grouped.entries()]
+      .map(([key, results]): ResultTrend => {
+        const entries = results
+          .map((item) => ({
+            date: item.result.date,
+            points: item.points,
+            time: item.result.time,
+            seconds: resultSeconds(item.result.time),
+          }))
+          .sort((a, b) => a.date.localeCompare(b.date));
+        const timed = entries.filter((entry) => entry.seconds != null);
+
+        return {
+          key,
+          label: key.replace('|', ' - '),
+          entries,
+          bestPoints: Math.max(...entries.map((entry) => entry.points)),
+          latestPoints: entries.at(-1)?.points ?? 0,
+          bestTimeSeconds: timed.length ? Math.min(...timed.map((entry) => entry.seconds!)) : null,
+          latestTimeSeconds: timed.at(-1)?.seconds ?? null,
+        };
+      })
+      .sort((a, b) => b.bestPoints - a.bestPoints || a.label.localeCompare(b.label));
+  }, [filteredPointResults]);
 
   const currentEntries = useMemo(
     () => [...(latest?.entries ?? [])]
@@ -558,7 +665,7 @@ export function App() {
 
           <section className="panel">
             <div className="rank-list">
-              {currentEntries.map((entry) => {
+              {currentEntries.length ? currentEntries.map((entry) => {
                 const entryPointResult = allPointResults.find((item) => (
                   item.result.course === entry.course
                   && item.result.event === entry.event
@@ -586,35 +693,58 @@ export function App() {
                     </div>
                   </article>
                 );
-              })}
+              }) : (
+                <div className="inline-empty">No ranking snapshot is imported for this filtered view.</div>
+              )}
             </div>
           </section>
 
           <section className="panel">
             <div className="section-heading">
               <div>
-                <p className="eyebrow">Movement</p>
-                <h2>Ranking history</h2>
+                <p className="eyebrow">{trends.length ? 'Movement' : 'Historical results'}</p>
+                <h2>{trends.length ? 'Ranking history' : 'Result history'}</h2>
               </div>
             </div>
-            <div className="trend-grid">
-              {trends.map((trend) => (
-                <article key={trend.key} className="trend-card">
-                  <div className="trend-card-head">
-                    <strong>{trend.label}</strong>
-                    <span className={trend.movement && trend.movement < 0 ? 'down' : trend.movement && trend.movement > 0 ? 'up' : ''}>
-                      {movementText(trend.movement)}
-                    </span>
-                  </div>
-                  <TrendChart entries={trend.entries} />
-                  <div className="trend-meta">
-                    <span>Best {ordinal(trend.bestPlace)}</span>
-                    <span>Latest {ordinal(trend.latestPlace)}</span>
-                    <span>Best time {formatSeconds(trend.bestTimeSeconds)}</span>
-                  </div>
-                </article>
-              ))}
-            </div>
+            {trends.length ? (
+              <div className="trend-grid">
+                {trends.map((trend) => (
+                  <article key={trend.key} className="trend-card">
+                    <div className="trend-card-head">
+                      <strong>{trend.label}</strong>
+                      <span className={trend.movement && trend.movement < 0 ? 'down' : trend.movement && trend.movement > 0 ? 'up' : ''}>
+                        {movementText(trend.movement)}
+                      </span>
+                    </div>
+                    <TrendChart entries={trend.entries} />
+                    <div className="trend-meta">
+                      <span>Best {ordinal(trend.bestPlace)}</span>
+                      <span>Latest {ordinal(trend.latestPlace)}</span>
+                      <span>Best time {formatSeconds(trend.bestTimeSeconds)}</span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : resultTrends.length ? (
+              <div className="trend-grid">
+                {resultTrends.map((trend) => (
+                  <article key={trend.key} className="trend-card result-trend-card">
+                    <div className="trend-card-head">
+                      <strong>{trend.label}</strong>
+                      <span>{trend.entries.length} swims</span>
+                    </div>
+                    <PointsChart entries={trend.entries} />
+                    <div className="trend-meta">
+                      <span>Best {trend.bestPoints} pts</span>
+                      <span>Latest {trend.latestPoints} pts</span>
+                      <span>Best time {formatSeconds(trend.bestTimeSeconds)}</span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="inline-empty">No ranking snapshots or scored result history in this filtered view.</div>
+            )}
           </section>
 
           <section className="panel">

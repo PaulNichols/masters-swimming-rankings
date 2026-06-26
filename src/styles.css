@@ -491,10 +491,18 @@ button:hover {
   stroke-width: 3;
 }
 
+.points-chart path {
+  stroke: #0f766e;
+}
+
 .trend-chart circle {
   fill: #087c89;
   stroke: #ffffff;
   stroke-width: 2;
+}
+
+.points-chart circle {
+  fill: #0f766e;
 }
 
 .trend-chart text {
