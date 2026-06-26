@@ -493,7 +493,7 @@ export function App() {
       <div className="section-heading">
         <div>
           <p className="eyebrow">Rankings</p>
-          <h2>Rankings in view</h2>
+          <h2>Filtered Results</h2>
         </div>
         {currentEntries.length > rankingPageSize && (
           <div className="pagination-controls" aria-label="Rankings pagination">
