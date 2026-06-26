@@ -37,7 +37,8 @@ export function eventKey(entry: RankingEntry): string {
 }
 
 export function eventLabel(entry: RankingEntry): string {
-  return `${entry.scope} ${entry.course} - ${entry.event}`;
+  const scope = entry.scope === 'Australia' ? 'National' : entry.scope;
+  return `${scope} ${entry.course} - ${entry.event}`;
 }
 
 export function latestSnapshot(snapshots: RankingSnapshot[]): RankingSnapshot | undefined {
