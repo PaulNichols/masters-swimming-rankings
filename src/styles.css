@@ -23,6 +23,7 @@ select {
 main {
   display: grid;
   gap: 18px;
+  grid-template-columns: minmax(0, 1fr);
   margin: 0 auto;
   max-width: 1180px;
   padding: 20px;
@@ -32,6 +33,7 @@ main {
   background: #fcfaf6;
   border: 1px solid #d8d1c5;
   border-radius: 8px;
+  min-width: 0;
   overflow: hidden;
 }
 
@@ -40,7 +42,7 @@ main {
   background: linear-gradient(90deg, #0f766e, #2b7fff 55%, #e6b85c);
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   height: 64px;
   padding: 10px;
 }
@@ -56,6 +58,10 @@ main {
   gap: 20px;
   justify-content: space-between;
   padding: 24px;
+}
+
+.top-content > div {
+  min-width: 0;
 }
 
 .eyebrow {
@@ -112,7 +118,7 @@ select {
 }
 
 button,
-.button-like {
+button {
   align-items: center;
   background: #ffffff;
   color: #17211f;
@@ -124,24 +130,25 @@ button,
 }
 
 button:hover,
-.button-like:hover {
+button:hover {
   border-color: #0f766e;
 }
 
-.button-like input {
-  display: none;
-}
-
-.toolbar {
+.data-bar {
   align-items: center;
+  background: #fff;
+  border: 1px solid #d8d1c5;
+  border-radius: 8px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 10px 12px;
 }
 
-.error {
-  color: #a12b2b;
-  font-weight: 700;
+.data-bar span {
+  color: #52605c;
+  font-size: 0.9rem;
 }
 
 .stats-grid {
@@ -170,7 +177,8 @@ button:hover,
 .rank-row span,
 .gap,
 .competition-list p,
-.time-table span {
+.time-table span,
+.history-table span {
   color: #61706b;
   font-size: 0.88rem;
 }
@@ -329,6 +337,37 @@ button:hover,
   margin: 0;
 }
 
+.filter-row {
+  display: flex;
+  gap: 10px;
+}
+
+.history-table {
+  display: grid;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.history-head,
+.history-table > div {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 110px 90px minmax(190px, 1.2fr) 90px 70px minmax(150px, 1fr);
+  min-width: 760px;
+}
+
+.history-head {
+  border-bottom: 1px solid #d8d1c5;
+  font-weight: 800;
+  padding: 0 0 8px;
+}
+
+.history-table > div:not(.history-head) {
+  border-bottom: 1px solid #eee7dc;
+  padding: 8px 0;
+}
+
 .empty-state {
   min-height: 240px;
 }
@@ -348,9 +387,15 @@ footer {
   }
 
   .top-content,
-  .section-heading {
+  .section-heading,
+  .filter-row,
+  .data-bar {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .data-bar button {
+    width: 100%;
   }
 
   .field {

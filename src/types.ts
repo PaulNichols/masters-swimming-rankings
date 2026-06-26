@@ -31,10 +31,13 @@ export type CompetitionResult = {
   swimmerId: string;
   competition: string;
   date: string;
+  year?: number;
   ageGroup: string;
   event: string;
   course: Course;
   time?: string;
+  points?: string;
+  location?: string;
   placing?: string;
   medal?: 'Gold' | 'Silver' | 'Bronze' | 'None' | 'Unknown';
   notes?: string;

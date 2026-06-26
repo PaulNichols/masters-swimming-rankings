@@ -1,19 +1,8 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { seedStore } from './data';
 import { loadGitHubData } from './githubData';
 import { buildEventTrends, eventKey, formatDate, formatSeconds, latestSnapshot, movementText, ordinal, summarizeCompetitions } from './metrics';
-import { clearSavedStore, hasSavedStore, loadStore, resetStore, saveStore } from './storage';
 import type { RankingEntry, RankingsStore } from './types';
-
-function downloadJson(store: RankingsStore): void {
-  const blob = new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `masters-rankings-${new Date().toISOString().slice(0, 10)}.json`;
-  link.click();
-  URL.revokeObjectURL(url);
-}
 
 function scopeLabel(entry: RankingEntry): string {
   return entry.scope === 'World' ? 'World' : `${entry.scope} ${entry.course}`;
@@ -52,21 +41,14 @@ function TrendChart({ entries }: { entries: Array<RankingEntry & { checkedAt: st
 }
 
 export function App() {
-  const [store, setStore] = useState<RankingsStore>(() => loadStore());
-  const [selectedSwimmerId, setSelectedSwimmerId] = useState(store.swimmers[0]?.id ?? '');
+  const [store, setStore] = useState<RankingsStore>(() => seedStore);
+  const [selectedSwimmerId, setSelectedSwimmerId] = useState(seedStore.swimmers[0]?.id ?? '');
   const [selectedTrendKey, setSelectedTrendKey] = useState<string>('all');
-  const [importError, setImportError] = useState('');
-  const [dataSource, setDataSource] = useState(hasSavedStore() ? 'Browser local copy' : 'Bundled seed data');
+  const [selectedYear, setSelectedYear] = useState('all');
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState('all');
+  const [dataSource, setDataSource] = useState('Bundled seed data');
 
   useEffect(() => {
-    saveStore(store);
-  }, [store]);
-
-  useEffect(() => {
-    if (hasSavedStore()) {
-      return;
-    }
-
     loadGitHubData()
       .then((githubStore) => {
         setStore(githubStore);
@@ -81,10 +63,20 @@ export function App() {
   const selectedSwimmer = store.swimmers.find((swimmer) => swimmer.id === selectedSwimmerId) ?? store.swimmers[0];
   const swimmerSnapshots = store.snapshots.filter((snapshot) => snapshot.swimmerId === selectedSwimmer?.id);
   const swimmerCompetitions = store.competitions.filter((result) => result.swimmerId === selectedSwimmer?.id);
+  const years = [...new Set(swimmerCompetitions.map((result) => result.year ?? new Date(result.date).getFullYear()))]
+    .sort((a, b) => b - a);
+  const ageGroups = [...new Set([
+    ...swimmerSnapshots.map((snapshot) => snapshot.ageGroup),
+    ...swimmerCompetitions.map((result) => `Men ${result.ageGroup.replace(/^Men\s+/i, '')}`),
+  ])].sort();
+  const filteredCompetitions = swimmerCompetitions
+    .filter((result) => selectedYear === 'all' || String(result.year ?? new Date(result.date).getFullYear()) === selectedYear)
+    .filter((result) => selectedAgeGroup === 'all' || `Men ${result.ageGroup.replace(/^Men\s+/i, '')}` === selectedAgeGroup)
+    .sort((a, b) => b.date.localeCompare(a.date) || a.event.localeCompare(b.event));
   const latest = latestSnapshot(swimmerSnapshots);
   const trends = buildEventTrends(swimmerSnapshots);
   const filteredTrends = selectedTrendKey === 'all' ? trends : trends.filter((trend) => trend.key === selectedTrendKey);
-  const competitionGroups = summarizeCompetitions(swimmerCompetitions);
+  const competitionGroups = summarizeCompetitions(filteredCompetitions);
 
   const currentEntries = useMemo(
     () => [...(latest?.entries ?? [])].sort((a, b) => (a.place ?? 99) - (b.place ?? 99) || scopeLabel(a).localeCompare(scopeLabel(b))),
@@ -122,27 +114,6 @@ export function App() {
   const bestEver = trends.find((trend) => trend.bestPlace != null);
   const ageGroup = latest?.ageGroup ?? selectedSwimmer?.ageGroups[0] ?? 'No age group yet';
 
-  function handleImport(event: ChangeEvent<HTMLInputElement>): void {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-
-    file.text()
-      .then((text) => {
-        const parsed = JSON.parse(text) as RankingsStore;
-        if (!Array.isArray(parsed.swimmers) || !Array.isArray(parsed.snapshots) || !Array.isArray(parsed.competitions)) {
-          throw new Error('Invalid rankings data file.');
-        }
-        setStore({ ...parsed, updatedAt: new Date().toISOString() });
-        setDataSource('Imported browser copy');
-        setImportError('');
-      })
-      .catch((error: unknown) => {
-        setImportError(error instanceof Error ? error.message : 'Could not import that file.');
-      });
-  }
-
   return (
     <main>
       <section className="top-shell">
@@ -169,29 +140,17 @@ export function App() {
         </div>
       </section>
 
-      <section className="toolbar">
-        <button type="button" onClick={() => downloadJson(store)}>Export</button>
-        <label className="button-like">
-          Import
-          <input type="file" accept="application/json" onChange={handleImport} />
-        </label>
+      <section className="data-bar">
+        <span>Data source: {dataSource}</span>
+        <span>Updated: {formatDate(store.updatedAt)}</span>
         <button type="button" onClick={() => {
           loadGitHubData()
             .then((githubStore) => {
-              clearSavedStore();
               setStore(githubStore);
               setDataSource('GitHub JSON');
             })
-            .catch(() => {
-              setStore(resetStore());
-              setDataSource('Bundled seed data');
-            });
+            .catch(() => setDataSource('Bundled seed data'));
         }}>Refresh GitHub JSON</button>
-        <button type="button" onClick={() => {
-          setStore(resetStore());
-          setDataSource('Bundled seed data');
-        }}>Reset sample data</button>
-        {importError && <span className="error">{importError}</span>}
       </section>
 
       {swimmerSnapshots.length === 0 ? (
@@ -313,19 +272,68 @@ export function App() {
                   <article key={key}>
                     <strong>{key}</strong>
                     {results.map((result) => (
-                      <p key={result.id}>{result.event} · {result.time ?? 'no time'} · {result.placing ?? 'placing needed'} · Medal {result.medal ?? 'Unknown'}</p>
+                      <p key={result.id}>{result.event} · {result.time ?? 'no time'} · {result.placing ?? result.location ?? 'placing needed'} · Medal {result.medal ?? 'Unknown'}</p>
                     ))}
                   </article>
                 ))}
               </div>
             </div>
           </section>
+
+          <section className="panel">
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">Official MSARC history</p>
+                <h2>Previous years and age groups</h2>
+              </div>
+              <div className="filter-row">
+                <label className="field compact">
+                  <span>Year</span>
+                  <select value={selectedYear} onChange={(event) => setSelectedYear(event.target.value)}>
+                    <option value="all">All years</option>
+                    {years.map((year) => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="field compact">
+                  <span>Age group</span>
+                  <select value={selectedAgeGroup} onChange={(event) => setSelectedAgeGroup(event.target.value)}>
+                    <option value="all">All age groups</option>
+                    {ageGroups.map((group) => (
+                      <option key={group} value={group}>{group}</option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div className="history-table">
+              <div className="history-head">
+                <span>Date</span>
+                <span>Age</span>
+                <span>Event</span>
+                <span>Time</span>
+                <span>Points</span>
+                <span>Location</span>
+              </div>
+              {filteredCompetitions.map((result) => (
+                <div key={result.id}>
+                  <span>{formatDate(result.date)}</span>
+                  <span>Men {result.ageGroup.replace(/^Men\s+/i, '')}</span>
+                  <span>{result.course} {result.event}</span>
+                  <strong>{result.time || 'n/a'}</strong>
+                  <span>{result.points ?? '-'}</span>
+                  <span>{result.location ?? result.competition}</span>
+                </div>
+              ))}
+            </div>
+          </section>
         </>
       )}
 
       <footer>
-        <span>Data source: {dataSource}. Local edits stay in this browser until exported or committed to GitHub JSON.</span>
-        <span>Seed version: {seedStore.updatedAt}</span>
+        <span>Canonical data lives in GitHub JSON and is published by GitHub Pages.</span>
+        <span>Seed fallback: {seedStore.updatedAt}</span>
       </footer>
     </main>
   );
