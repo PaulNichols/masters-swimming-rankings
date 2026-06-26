@@ -269,6 +269,68 @@ button:hover {
   padding: 8px 0;
 }
 
+.opportunity-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.opportunity-column {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.opportunity-column h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.opportunity-list {
+  display: grid;
+  gap: 8px;
+}
+
+.opportunity-list article {
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(8, 124, 137, 0.08), rgba(255, 255, 255, 0.9) 48%),
+    #f7fbfa;
+  border: 1px solid #d7e8e5;
+  border-radius: 6px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 46px minmax(0, 1fr) minmax(120px, 0.55fr);
+  min-height: 76px;
+  padding: 10px;
+}
+
+.opportunity-list p,
+.opportunity-note {
+  color: #61706b;
+  font-size: 0.86rem;
+}
+
+.opportunity-list p {
+  margin: 3px 0 0;
+}
+
+.course-chip {
+  align-items: center;
+  background: #0f766e;
+  border-radius: 6px;
+  color: #ffffff;
+  display: flex;
+  font-size: 0.82rem;
+  font-weight: 900;
+  height: 34px;
+  justify-content: center;
+}
+
+.opportunity-note {
+  text-align: right;
+}
+
 .panel,
 .empty-state {
   padding: 18px;
@@ -468,8 +530,18 @@ button:hover {
 
   .stats-grid,
   .point-grid,
+  .opportunity-grid,
   .trend-grid {
     grid-template-columns: 1fr;
+  }
+
+  .opportunity-list article {
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+
+  .opportunity-note {
+    grid-column: 2;
+    text-align: left;
   }
 
   .rank-row {

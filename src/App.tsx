@@ -2,11 +2,24 @@ import { useEffect, useMemo, useState } from 'react';
 import { seedStore } from './data';
 import { loadGitHubData } from './githubData';
 import { buildEventTrends, eventKey, formatDate, formatSeconds, latestSnapshot, movementText, ordinal, summarizeCompetitions } from './metrics';
-import type { CompetitionResult, RankingEntry, RankingsStore } from './types';
+import type { CompetitionResult, Course, RankingEntry, RankingsStore } from './types';
 
 type PointResult = {
   result: CompetitionResult;
   points: number;
+};
+
+type PointOpportunity = {
+  course: 'LC' | 'SC';
+  event: string;
+  points: number;
+  time?: string;
+  date: string;
+  gapToAverage: number | null;
+};
+
+type RankingOpportunity = RankingEntry & {
+  course: 'LC' | 'SC';
 };
 
 function scopeLabel(entry: RankingEntry): string {
@@ -55,6 +68,16 @@ function average(values: number[]): number | null {
 
 function formatPoints(value: number | null | undefined): string {
   return value == null ? 'n/a' : Math.round(value).toString();
+}
+
+function isPoolCourse(course: Course): course is 'LC' | 'SC' {
+  return course === 'LC' || course === 'SC';
+}
+
+function byCourse<T extends { course: 'LC' | 'SC' }>(items: T[], perCourse: number): T[] {
+  return (['SC', 'LC'] as const).flatMap((course) => (
+    items.filter((item) => item.course === course).slice(0, perCourse)
+  ));
 }
 
 function currentAgeGroupFor(store: RankingsStore, swimmerId: string): string {
@@ -229,6 +252,52 @@ export function App() {
     [latest, selectedRankingScope],
   );
 
+  const pointOpportunities = useMemo(() => {
+    const weakestByEvent = new Map<string, PointOpportunity>();
+
+    filteredPointResults
+      .forEach((item) => {
+        if (!isPoolCourse(item.result.course)) {
+          return;
+        }
+
+        const course = item.result.course;
+        const key = `${course}|${item.result.event}`;
+        const current = weakestByEvent.get(key);
+
+        if (current && current.points <= item.points) {
+          return;
+        }
+
+        weakestByEvent.set(key, {
+          course,
+          event: item.result.event,
+          points: item.points,
+          time: item.result.time,
+          date: item.result.date,
+          gapToAverage: filteredAveragePoints == null ? null : Math.max(0, filteredAveragePoints - item.points),
+        });
+      });
+
+    return byCourse(
+      [...weakestByEvent.values()].sort((a, b) => a.points - b.points || a.event.localeCompare(b.event)),
+      2,
+    );
+  }, [filteredPointResults, filteredAveragePoints]);
+
+  const rankingOpportunities = useMemo(() => byCourse(
+    currentEntries
+      .filter((entry): entry is RankingOpportunity => (
+        isPoolCourse(entry.course)
+        && entry.place != null
+        && entry.place > 1
+        && entry.gapSeconds != null
+        && entry.gapSeconds > 0
+      ))
+      .sort((a, b) => (a.gapSeconds ?? 99) - (b.gapSeconds ?? 99) || (a.place ?? 99) - (b.place ?? 99)),
+    2,
+  ), [currentEntries]);
+
   const latestMovement = useMemo(() => {
     const ordered = [...filteredSnapshots].sort((a, b) => a.checkedAt.localeCompare(b.checkedAt));
     const current = ordered.at(-1);
@@ -401,6 +470,57 @@ export function App() {
                   <span>{summary.count}</span>
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="panel opportunities-panel">
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">Race choice</p>
+                <h2>Opportunities</h2>
+              </div>
+            </div>
+            <div className="opportunity-grid">
+              <div className="opportunity-column">
+                <h3>Lift point average</h3>
+                <div className="opportunity-list">
+                  {pointOpportunities.length ? pointOpportunities.map((item) => (
+                    <article key={`points-${item.course}-${item.event}-${item.date}`}>
+                      <span className="course-chip">{item.course}</span>
+                      <div>
+                        <strong>{item.event}</strong>
+                        <p>{item.points} pts{item.time ? ` · ${item.time}` : ''} · {formatDate(item.date)}</p>
+                      </div>
+                      <span className="opportunity-note">
+                        {item.gapToAverage != null && item.gapToAverage >= 1 ? `${Math.round(item.gapToAverage)} below avg` : 'Lowest scored swim'}
+                      </span>
+                    </article>
+                  )) : (
+                    <div className="inline-empty">No scored swims in this filtered view.</div>
+                  )}
+                </div>
+              </div>
+              <div className="opportunity-column">
+                <h3>Close ranking moves</h3>
+                <div className="opportunity-list">
+                  {rankingOpportunities.length ? rankingOpportunities.map((entry) => (
+                    <article key={`ranking-${entry.scope}-${entry.course}-${entry.event}`}>
+                      <span className="course-chip">{entry.course}</span>
+                      <div>
+                        <strong>{entry.event}</strong>
+                        <p>
+                          {scopeLabel(entry)} · {ordinal(entry.place)} now · {formatSeconds(entry.gapSeconds)} to {ordinal((entry.place ?? 1) - 1)}
+                        </p>
+                      </div>
+                      <span className="opportunity-note">
+                        {entry.aheadName ? `${entry.aheadName}${entry.aheadTime ? ` ${entry.aheadTime}` : ''}` : 'Swimmer ahead'}
+                      </span>
+                    </article>
+                  )) : (
+                    <div className="inline-empty">No close ranking gaps in this filtered view.</div>
+                  )}
+                </div>
+              </div>
             </div>
           </section>
 
