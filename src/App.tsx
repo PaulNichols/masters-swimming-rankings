@@ -439,6 +439,49 @@ export function App() {
   }, [filteredSnapshots, selectedRankingScope]);
 
   const bestRankingInView = trends.find((trend) => trend.bestPlace != null);
+  const rankingRows = (
+    <section className="panel rankings-panel">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Rankings</p>
+          <h2>Rankings in view</h2>
+        </div>
+      </div>
+      <div className="rank-list">
+        {currentEntries.length ? currentEntries.map((entry) => {
+          const entryPointResult = allPointResults.find((item) => (
+            item.result.course === entry.course
+            && item.result.event === entry.event
+            && item.result.date === entry.resultDate
+            && item.result.time === entry.time
+          ));
+
+          return (
+            <article key={`${entry.scope}-${entry.course}-${entry.event}`} className="rank-row">
+              <div className="rank-place">{ordinal(entry.place)}</div>
+              <div>
+                <strong>{entry.event}</strong>
+                <span>
+                  {scopeLabel(entry)}
+                  {entry.time ? ` · ${entry.time}` : ''}
+                  {entryPointResult ? ` · ${entryPointResult.points} pts` : ''}
+                </span>
+              </div>
+              <div className="gap">
+                {entry.gapSeconds != null
+                  ? `${entry.gapSeconds.toFixed(2)}s behind ${entry.aheadName}`
+                  : entry.place === 1
+                    ? 'Leading'
+                    : 'No official 2026 position listed'}
+              </div>
+            </article>
+          );
+        }) : (
+          <div className="inline-empty">No ranking snapshot is imported for this filtered view.</div>
+        )}
+      </div>
+    </section>
+  );
 
   return (
     <main>
@@ -534,6 +577,8 @@ export function App() {
               <strong>{latestMovement.dropped}</strong>
             </article>
           </section>
+
+          {rankingRows}
 
           {swimmerAchievements.length > 0 && (
             <section className="panel achievement-panel">
@@ -660,42 +705,6 @@ export function App() {
                   )}
                 </div>
               </div>
-            </div>
-          </section>
-
-          <section className="panel">
-            <div className="rank-list">
-              {currentEntries.length ? currentEntries.map((entry) => {
-                const entryPointResult = allPointResults.find((item) => (
-                  item.result.course === entry.course
-                  && item.result.event === entry.event
-                  && item.result.date === entry.resultDate
-                  && item.result.time === entry.time
-                ));
-
-                return (
-                  <article key={`${entry.scope}-${entry.course}-${entry.event}`} className="rank-row">
-                    <div className="rank-place">{ordinal(entry.place)}</div>
-                    <div>
-                      <strong>{entry.event}</strong>
-                      <span>
-                        {scopeLabel(entry)}
-                        {entry.time ? ` · ${entry.time}` : ''}
-                        {entryPointResult ? ` · ${entryPointResult.points} pts` : ''}
-                      </span>
-                    </div>
-                    <div className="gap">
-                      {entry.gapSeconds != null
-                        ? `${entry.gapSeconds.toFixed(2)}s behind ${entry.aheadName}`
-                        : entry.place === 1
-                          ? 'Leading'
-                          : 'No official 2026 position listed'}
-                    </div>
-                  </article>
-                );
-              }) : (
-                <div className="inline-empty">No ranking snapshot is imported for this filtered view.</div>
-              )}
             </div>
           </section>
 
