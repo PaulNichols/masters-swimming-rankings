@@ -357,13 +357,6 @@ export function App() {
           </section>
 
           <section className="panel">
-            <div className="section-heading">
-              <div>
-                <p className="eyebrow">Points</p>
-                <h2>Point score</h2>
-              </div>
-              <span className="subtle">Official MSARC result-history points</span>
-            </div>
             <div className="point-grid">
               <article>
                 <span>All-time best</span>
