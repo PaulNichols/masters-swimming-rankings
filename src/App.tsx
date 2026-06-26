@@ -33,12 +33,14 @@ type DashboardTab = 'results' | 'endurance' | 'points' | 'opportunities' | 'hist
 
 const dashboardTabs: Array<{ id: DashboardTab; label: string }> = [
   { id: 'results', label: 'Results' },
-  { id: 'endurance', label: 'Endurance' },
   { id: 'points', label: 'Points' },
   { id: 'opportunities', label: 'Opportunities' },
   { id: 'history', label: 'History' },
   { id: 'competitions', label: 'Competitions' },
+  { id: 'endurance', label: 'Endurance' },
 ];
+
+const millionMetresLoginUrl = 'https://million-metres-2024.glide.page/';
 
 type ResultTrend = {
   key: string;
@@ -801,6 +803,13 @@ export function App() {
                   <h2>Endurance programs</h2>
                 </div>
               </div>
+              <div className="source-note">
+                <div>
+                  <strong>Private Million Metres login</strong>
+                  <p>Official totals live behind the Million Metres login. This site can show public E1000 minimums, but the private app does not allow embedded login.</p>
+                </div>
+                <a href={millionMetresLoginUrl} target="_blank" rel="noreferrer">Open login</a>
+              </div>
               <div className="endurance-grid">
                 {swimmerEndurancePrograms.map((program) => {
                   const percent = programPercent(program);
@@ -837,6 +846,13 @@ export function App() {
                   <h2>Endurance programs</h2>
                 </div>
               </div>
+              <div className="source-note">
+                <div>
+                  <strong>Private Million Metres login</strong>
+                  <p>Official totals live behind the Million Metres login. This site can show public challenge results, but the private app does not allow embedded login.</p>
+                </div>
+                <a href={millionMetresLoginUrl} target="_blank" rel="noreferrer">Open login</a>
+              </div>
               <div className="endurance-grid">
                 {swimmerAchievements.map((achievement) => (
                   <article key={achievement.id} className="endurance-card">
@@ -865,6 +881,13 @@ export function App() {
                   <p className="eyebrow">Endurance</p>
                   <h2>Endurance programs</h2>
                 </div>
+              </div>
+              <div className="source-note">
+                <div>
+                  <strong>Private Million Metres login</strong>
+                  <p>Official totals live behind the Million Metres login. The app does not expose an embeddable login view for this dashboard.</p>
+                </div>
+                <a href={millionMetresLoginUrl} target="_blank" rel="noreferrer">Open login</a>
               </div>
               <div className="inline-empty">No endurance program data is imported for this swimmer yet.</div>
             </section>
