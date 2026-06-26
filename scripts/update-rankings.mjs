@@ -7,6 +7,11 @@ const e1000StartYear = 2010;
 const e1000SourceUrl = 'https://e1000.msarc.org.au/results/results.php';
 const target26Metres = 26 * 2600;
 const millionMetresTarget = 1_000_000;
+const sourceHeaders = {
+  accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'accept-language': 'en-AU,en;q=0.9',
+  'user-agent': 'Mozilla/5.0 (compatible; masters-swimming-rankings-data-refresh/1.0)',
+};
 
 const swimmers = [
   {
@@ -82,7 +87,9 @@ function seconds(value) {
 }
 
 async function fetchText(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: sourceHeaders,
+  });
   if (!response.ok) {
     throw new Error(`Request failed ${response.status}: ${url}`);
   }
@@ -95,6 +102,7 @@ async function fetchForm(url, body) {
     method: 'POST',
     body: new URLSearchParams(body),
     headers: {
+      ...sourceHeaders,
       'content-type': 'application/x-www-form-urlencoded',
     },
   });
