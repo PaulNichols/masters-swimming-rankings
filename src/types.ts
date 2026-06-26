@@ -43,6 +43,18 @@ export type CompetitionResult = {
   notes?: string;
 };
 
+export type Achievement = {
+  id: string;
+  swimmerId: string;
+  year: number;
+  title: string;
+  award: string;
+  sourceName: string;
+  sourceUrl: string;
+  notes?: string;
+  minimumMetres?: number;
+};
+
 export type Swimmer = {
   id: string;
   name: string;
@@ -54,5 +66,6 @@ export type RankingsStore = {
   swimmers: Swimmer[];
   snapshots: RankingSnapshot[];
   competitions: CompetitionResult[];
+  achievements?: Achievement[];
   updatedAt: string;
 };

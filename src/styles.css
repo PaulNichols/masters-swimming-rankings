@@ -269,6 +269,45 @@ button:hover {
   padding: 8px 0;
 }
 
+.achievement-list {
+  display: grid;
+  gap: 10px;
+}
+
+.achievement-list article {
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(31, 122, 224, 0.08), rgba(255, 255, 255, 0.92) 44%),
+    #f7fbfa;
+  border: 1px solid #d7e8e5;
+  border-radius: 6px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 110px minmax(0, 1fr) minmax(120px, auto);
+  padding: 12px;
+}
+
+.achievement-list article > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.achievement-list span,
+.achievement-list p {
+  color: #61706b;
+  font-size: 0.88rem;
+}
+
+.achievement-list p {
+  margin: 4px 0 0;
+}
+
+.achievement-list a {
+  color: #0f766e;
+  font-weight: 800;
+  text-align: right;
+}
+
 .opportunity-grid {
   display: grid;
   gap: 14px;
@@ -533,6 +572,15 @@ button:hover {
   .opportunity-grid,
   .trend-grid {
     grid-template-columns: 1fr;
+  }
+
+  .achievement-list article {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .achievement-list a {
+    text-align: left;
   }
 
   .opportunity-list article {

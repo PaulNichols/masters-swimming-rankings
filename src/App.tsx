@@ -156,6 +156,9 @@ export function App() {
   const sortedSwimmers = [...store.swimmers].sort((a, b) => a.name.localeCompare(b.name));
   const swimmerSnapshots = store.snapshots.filter((snapshot) => snapshot.swimmerId === selectedSwimmer?.id);
   const swimmerCompetitions = store.competitions.filter((result) => result.swimmerId === selectedSwimmer?.id);
+  const swimmerAchievements = (store.achievements ?? [])
+    .filter((achievement) => achievement.swimmerId === selectedSwimmer?.id)
+    .sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
   const yearAgePairs = [
     ...swimmerSnapshots.map((snapshot) => ({
       year: new Date(snapshot.checkedAt).getFullYear(),
@@ -424,6 +427,35 @@ export function App() {
               <strong>{latestMovement.dropped}</strong>
             </article>
           </section>
+
+          {swimmerAchievements.length > 0 && (
+            <section className="panel achievement-panel">
+              <div className="section-heading">
+                <div>
+                  <p className="eyebrow">Endurance</p>
+                  <h2>Million Metres and challenges</h2>
+                </div>
+              </div>
+              <div className="achievement-list">
+                {swimmerAchievements.map((achievement) => (
+                  <article key={achievement.id}>
+                    <div>
+                      <span>{achievement.year}</span>
+                      <strong>{achievement.award}</strong>
+                    </div>
+                    <div>
+                      <strong>{achievement.title}</strong>
+                      <p>
+                        {achievement.minimumMetres ? `At least ${achievement.minimumMetres.toLocaleString('en-AU')} m logged` : 'Logged endurance challenge result'}
+                        {achievement.notes ? ` · ${achievement.notes}` : ''}
+                      </p>
+                    </div>
+                    <a href={achievement.sourceUrl} target="_blank" rel="noreferrer">{achievement.sourceName}</a>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
 
           <section className="panel">
             <div className="point-grid">

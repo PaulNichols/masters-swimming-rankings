@@ -7475,5 +7475,29 @@
       "medal": "Unknown"
     }
   ],
-  "updatedAt": "2026-06-26T04:48:07.740Z"
+  "updatedAt": "2026-06-26T04:48:07.740Z",
+  "achievements": [
+    {
+      "id": "msa-50x50-2025-josh-hemelaar",
+      "swimmerId": "josh-hemelaar",
+      "year": 2025,
+      "title": "MSA 50 x 50m x 50 Weeks Challenge",
+      "award": "Gold",
+      "sourceName": "MSA 50x50 Challenge",
+      "sourceUrl": "https://mastersswimming.org.au/msa-50th-anniversary/50-x-50m-x-50-weeks-msa-members-challenge-2025/",
+      "minimumMetres": 125000,
+      "notes": "Public MSA challenge listing; activity logged through the Million Metres app."
+    },
+    {
+      "id": "msa-50x50-2025-paul-nichols",
+      "swimmerId": "paul-nichols",
+      "year": 2025,
+      "title": "MSA 50 x 50m x 50 Weeks Challenge",
+      "award": "Platinum",
+      "sourceName": "MSA 50x50 Challenge",
+      "sourceUrl": "https://mastersswimming.org.au/msa-50th-anniversary/50-x-50m-x-50-weeks-msa-members-challenge-2025/",
+      "minimumMetres": 125000,
+      "notes": "Public MSA challenge listing; activity logged through the Million Metres app."
+    }
+  ]
 }
