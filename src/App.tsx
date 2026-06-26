@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { seedStore } from './data';
 import { loadGitHubData } from './githubData';
 import { buildEventTrends, eventKey, formatDate, formatSeconds, latestSnapshot, movementText, ordinal, summarizeCompetitions } from './metrics';
-import type { CompetitionResult, Course, RankingEntry, RankingsStore } from './types';
+import type { CompetitionResult, Course, EnduranceProgram, RankingEntry, RankingsStore } from './types';
 
 type PointResult = {
   result: CompetitionResult;
@@ -51,6 +51,38 @@ function compactChartDate(value: string): string {
   const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
 
   return `${date.getDate().toString().padStart(2, '0')} ${month} ${date.getFullYear().toString().slice(-2)}`;
+}
+
+function formatMetres(value: number): string {
+  return `${value.toLocaleString('en-AU')} m`;
+}
+
+function programOrder(program: EnduranceProgram['program']): number {
+  return {
+    'million-metres': 0,
+    'target-26-26-26': 1,
+    '50x50': 2,
+  }[program];
+}
+
+function programPercent(program: EnduranceProgram): number | null {
+  if (program.completed == null || program.target == null || program.target <= 0) {
+    return null;
+  }
+
+  return Math.max(0, Math.min(100, (program.completed / program.target) * 100));
+}
+
+function programValue(program: EnduranceProgram): string {
+  if (program.completed != null && program.target != null) {
+    return `${program.completed.toLocaleString('en-AU')} / ${program.target.toLocaleString('en-AU')} ${program.unit}`;
+  }
+
+  if (program.metres != null) {
+    return formatMetres(program.metres);
+  }
+
+  return program.status;
 }
 
 function normalizeAgeGroup(value: string): string {
@@ -236,6 +268,9 @@ export function App() {
   const swimmerAchievements = (store.achievements ?? [])
     .filter((achievement) => achievement.swimmerId === selectedSwimmer?.id)
     .sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
+  const swimmerEndurancePrograms = (store.endurancePrograms ?? [])
+    .filter((program) => program.swimmerId === selectedSwimmer?.id)
+    .sort((a, b) => programOrder(a.program) - programOrder(b.program) || b.year - a.year || a.title.localeCompare(b.title));
   const yearAgePairs = [
     ...swimmerSnapshots.map((snapshot) => ({
       year: new Date(snapshot.checkedAt).getFullYear(),
@@ -607,18 +642,54 @@ export function App() {
 
           {rankingRows}
 
-          {swimmerAchievements.length > 0 && (
+          {swimmerEndurancePrograms.length > 0 && (
             <section className="panel achievement-panel">
               <div className="section-heading">
                 <div>
                   <p className="eyebrow">Endurance</p>
-                  <h2>Million Metres and challenges</h2>
+                  <h2>Endurance programs</h2>
                 </div>
               </div>
-              <div className="achievement-list">
+              <div className="endurance-grid">
+                {swimmerEndurancePrograms.map((program) => {
+                  const percent = programPercent(program);
+
+                  return (
+                    <article key={program.id} className="endurance-card">
+                      <div className="endurance-card-head">
+                        <span>{program.year}</span>
+                        <strong>{program.status}</strong>
+                      </div>
+                      <div>
+                        <strong>{program.title}</strong>
+                        <p>{programValue(program)}</p>
+                      </div>
+                      {percent != null && (
+                        <div className="progress-track" aria-label={`${Math.round(percent)} percent complete`}>
+                          <span style={{ width: `${percent}%` }} />
+                        </div>
+                      )}
+                      {program.notes && <p>{program.notes}</p>}
+                      <a href={program.sourceUrl} target="_blank" rel="noreferrer">{program.sourceName}</a>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {swimmerEndurancePrograms.length === 0 && swimmerAchievements.length > 0 && (
+            <section className="panel achievement-panel">
+              <div className="section-heading">
+                <div>
+                  <p className="eyebrow">Endurance</p>
+                  <h2>Endurance programs</h2>
+                </div>
+              </div>
+              <div className="endurance-grid">
                 {swimmerAchievements.map((achievement) => (
-                  <article key={achievement.id}>
-                    <div>
+                  <article key={achievement.id} className="endurance-card">
+                    <div className="endurance-card-head">
                       <span>{achievement.year}</span>
                       <strong>{achievement.award}</strong>
                     </div>

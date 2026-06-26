@@ -55,6 +55,39 @@ export type Achievement = {
   minimumMetres?: number;
 };
 
+export type EnduranceResult = {
+  id: string;
+  swimmerId: string;
+  year: number;
+  ageGroup: string;
+  course?: string;
+  distance: string;
+  stroke: string;
+  result: string;
+  metres?: number;
+  points: number;
+  date: string;
+  location?: string;
+  sourceName: string;
+  sourceUrl: string;
+};
+
+export type EnduranceProgram = {
+  id: string;
+  swimmerId: string;
+  year: number;
+  title: string;
+  program: 'million-metres' | 'target-26-26-26' | '50x50';
+  status: string;
+  completed?: number;
+  target?: number;
+  unit: string;
+  metres?: number;
+  sourceName: string;
+  sourceUrl: string;
+  notes?: string;
+};
+
 export type Swimmer = {
   id: string;
   name: string;
@@ -67,5 +100,7 @@ export type RankingsStore = {
   snapshots: RankingSnapshot[];
   competitions: CompetitionResult[];
   achievements?: Achievement[];
+  enduranceResults?: EnduranceResult[];
+  endurancePrograms?: EnduranceProgram[];
   updatedAt: string;
 };
