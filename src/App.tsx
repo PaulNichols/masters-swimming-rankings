@@ -412,13 +412,6 @@ export function App() {
           </section>
 
           <section className="panel">
-            <div className="section-heading">
-              <div>
-                <p className="eyebrow">Current snapshot</p>
-                <h2>Best positions first</h2>
-              </div>
-              <span>{latest ? formatDate(latest.checkedAt) : ''}</span>
-            </div>
             <div className="rank-list">
               {currentEntries.map((entry) => {
                 const entryPointResult = allPointResults.find((item) => (
