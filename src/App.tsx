@@ -373,7 +373,7 @@ export function App() {
   const pagedCurrentEntries = currentEntries.slice(rankingStartIndex, rankingStartIndex + rankingPageSize);
 
   const pointOpportunities = useMemo(() => {
-    const weakestByEvent = new Map<string, PointOpportunity>();
+    const latestByEvent = new Map<string, PointOpportunity>();
 
     filteredPointResults
       .forEach((item) => {
@@ -383,13 +383,17 @@ export function App() {
 
         const course = item.result.course;
         const key = `${course}|${item.result.event}`;
-        const current = weakestByEvent.get(key);
+        const current = latestByEvent.get(key);
 
-        if (current && current.points <= item.points) {
+        if (current && current.date > item.result.date) {
           return;
         }
 
-        weakestByEvent.set(key, {
+        if (current && current.date === item.result.date && current.points <= item.points) {
+          return;
+        }
+
+        latestByEvent.set(key, {
           course,
           event: item.result.event,
           points: item.points,
@@ -400,7 +404,7 @@ export function App() {
       });
 
     return byCourse(
-      [...weakestByEvent.values()].sort((a, b) => a.points - b.points || a.event.localeCompare(b.event)),
+      [...latestByEvent.values()].sort((a, b) => a.points - b.points || a.event.localeCompare(b.event)),
       2,
     );
   }, [filteredPointResults, filteredAveragePoints]);
@@ -705,7 +709,7 @@ export function App() {
                         <p>{item.points} pts{item.time ? ` · ${item.time}` : ''} · {formatDate(item.date)}</p>
                       </div>
                       <span className="opportunity-note">
-                        {item.gapToAverage != null && item.gapToAverage >= 1 ? `${Math.round(item.gapToAverage)} below avg` : 'Lowest scored swim'}
+                        {item.gapToAverage != null && item.gapToAverage >= 1 ? `${Math.round(item.gapToAverage)} below avg` : 'Latest scored swim'}
                       </span>
                     </article>
                   )) : (
