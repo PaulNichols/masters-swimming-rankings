@@ -610,6 +610,12 @@ export function App() {
           )}
 
           <section className="panel">
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">Points</p>
+                <h2>Point score</h2>
+              </div>
+            </div>
             <div className="point-grid">
               <article>
                 <span>All-time best</span>
