@@ -19,6 +19,13 @@ const swimmers = [
     club: 'Brisbane Southside Masters',
     rankingGroups: ['40-44'],
   },
+  {
+    id: 'stuart-collins',
+    name: 'Stuart Collins',
+    msaName: 'STUART COLLINS',
+    club: 'Brisbane Southside Masters / QSM',
+    rankingGroups: ['50-54'],
+  },
 ];
 
 function stripHtml(value) {
