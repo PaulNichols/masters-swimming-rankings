@@ -366,6 +366,11 @@ export function App() {
             </div>
             <div className="point-grid">
               <article>
+                <span>All-time best</span>
+                <strong>{bestPointResult ? `${bestPointResult.points} pts` : 'n/a'}</strong>
+                <p>{bestPointResult ? `${normalizeAgeGroup(bestPointResult.result.ageGroup)} · ${bestPointResult.result.course} ${bestPointResult.result.event}` : 'No scored swim yet'}</p>
+              </article>
+              <article>
                 <span>All-results average</span>
                 <strong>{formatPoints(averagePoints)}</strong>
                 <p>{allPointResults.length} scored swims</p>

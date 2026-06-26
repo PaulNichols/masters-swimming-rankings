@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 
 const dataPath = new URL('../public/data/rankings.json', import.meta.url);
 const currentYear = new Date().getFullYear();
+const historyStartYear = 2000;
 
 const swimmers = [
   {
@@ -192,7 +193,7 @@ async function readCurrentRankings(swimmer) {
 async function main() {
   const existing = JSON.parse(await fs.readFile(dataPath, 'utf8'));
   const now = new Date().toISOString();
-  const years = Array.from({ length: 5 }, (_, index) => currentYear - 4 + index);
+  const years = Array.from({ length: currentYear - historyStartYear + 1 }, (_, index) => historyStartYear + index);
   const competitions = [];
   const newSnapshots = [];
 
