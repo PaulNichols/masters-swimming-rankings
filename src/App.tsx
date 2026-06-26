@@ -235,7 +235,7 @@ export function App() {
           <div>
             <p className="eyebrow">Masters Swimming Rankings</p>
             <h1>{selectedSwimmer?.name ?? 'No swimmer selected'}</h1>
-            <p className="subtle">{selectedSwimmer?.club ?? 'Add a swimmer to start tracking'} · {ageGroup}</p>
+            <p className="subtle">{selectedSwimmer?.club ?? 'Add a swimmer to start tracking'} · {ageGroup} · Data refreshed {formatDate(store.updatedAt)}</p>
           </div>
           <div className="top-controls">
             <label className="field">
