@@ -8,6 +8,13 @@ function scopeLabel(entry: RankingEntry): string {
   return entry.scope === 'World' ? 'World' : `${entry.scope} ${entry.course}`;
 }
 
+function compactChartDate(value: string): string {
+  const date = new Date(value);
+  const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+
+  return `${date.getDate().toString().padStart(2, '0')} ${month} ${date.getFullYear().toString().slice(-2)}`;
+}
+
 function TrendChart({ entries }: { entries: Array<RankingEntry & { checkedAt: string }> }) {
   const ranked = entries.filter((entry) => entry.place != null);
 
@@ -16,24 +23,29 @@ function TrendChart({ entries }: { entries: Array<RankingEntry & { checkedAt: st
   }
 
   const width = 380;
-  const height = 140;
+  const height = 150;
+  const horizontalPad = 30;
+  const plotTop = 24;
+  const plotBottom = 108;
+  const dateY = 136;
   const maxPlace = Math.max(10, ...ranked.map((entry) => entry.place!));
   const points = ranked.map((entry, index) => {
-    const x = ranked.length === 1 ? width / 2 : (index / (ranked.length - 1)) * width;
-    const y = ((entry.place! - 1) / (maxPlace - 1)) * (height - 24) + 12;
+    const x = ranked.length === 1 ? width / 2 : (index / (ranked.length - 1)) * (width - horizontalPad * 2) + horizontalPad;
+    const y = ((entry.place! - 1) / (maxPlace - 1)) * (plotBottom - plotTop) + plotTop;
     return { x, y, entry };
   });
   const path = points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(' ');
 
   return (
     <svg className="trend-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Ranking trend chart">
-      <line x1="0" y1="12" x2={width} y2="12" />
-      <line x1="0" y1={height - 12} x2={width} y2={height - 12} />
+      <line x1={horizontalPad} y1={plotTop} x2={width - horizontalPad} y2={plotTop} />
+      <line x1={horizontalPad} y1={plotBottom} x2={width - horizontalPad} y2={plotBottom} />
       <path d={path} />
       {points.map((point) => (
         <g key={`${point.entry.checkedAt}-${point.entry.place}`}>
           <circle cx={point.x} cy={point.y} r="5" />
           <text x={point.x} y={point.y - 10}>{ordinal(point.entry.place)}</text>
+          <text className="date-label" x={point.x} y={dateY}>{compactChartDate(point.entry.checkedAt)}</text>
         </g>
       ))}
     </svg>
