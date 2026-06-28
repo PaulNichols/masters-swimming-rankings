@@ -1875,11 +1875,1232 @@
           "gapSeconds": 1.34
         }
       ]
+    },
+    {
+      "id": "2026-06-28-paul-nichols",
+      "swimmerId": "paul-nichols",
+      "checkedAt": "2026-06-28T07:41:56.805Z",
+      "ageGroup": "Men 50-54",
+      "source": "Official MSARC ranking portal.",
+      "entries": [
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "60MIN Freestyle",
+          "place": 1,
+          "time": "3700",
+          "seconds": 3700,
+          "meet": "Aerobics",
+          "resultDate": "2026-02-15"
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "100m Butterfly",
+          "place": 1,
+          "time": "1:20.42",
+          "seconds": 80.42,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21"
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "200m Individual Medley",
+          "place": 1,
+          "time": "2:52.58",
+          "seconds": 172.57999999999998,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21"
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "400m Backstroke",
+          "place": 1,
+          "time": "6:35.44",
+          "seconds": 395.44,
+          "meet": "Aerobics",
+          "resultDate": "2026-05-20"
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "400m Freestyle",
+          "place": 1,
+          "time": "5:19.95",
+          "seconds": 319.95,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21"
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "60MIN Freestyle",
+          "place": 1,
+          "time": "3700",
+          "seconds": 3700,
+          "meet": "Aerobics",
+          "resultDate": "2026-02-15"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Butterfly",
+          "place": 1,
+          "time": "1:09.13",
+          "seconds": 69.13,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Individual Medley",
+          "place": 1,
+          "time": "1:12.32",
+          "seconds": 72.32,
+          "meet": "QSM Interclub",
+          "resultDate": "2026-06-27"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "200m Freestyle",
+          "place": 1,
+          "time": "2:24.90",
+          "seconds": 144.9,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "200m Individual Medley",
+          "place": 1,
+          "time": "2:34.22",
+          "seconds": 154.22,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "400m Individual Medley",
+          "place": 1,
+          "time": "5:37.25",
+          "seconds": 337.25,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "50m Backstroke",
+          "place": 1,
+          "time": "33.00",
+          "seconds": 33,
+          "meet": "QSM Interclub",
+          "resultDate": "2026-06-27"
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "400m Backstroke",
+          "place": 2,
+          "time": "6:35.44",
+          "seconds": 395.44,
+          "meet": "Aerobics",
+          "resultDate": "2026-05-20",
+          "aheadName": "MATTHEW CRANLEY",
+          "aheadTime": "6:08.16",
+          "gapSeconds": 27.28
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "50m Butterfly",
+          "place": 2,
+          "time": "32.02",
+          "seconds": 32.02,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "BRYCE ANDERSON",
+          "aheadTime": "28.73",
+          "gapSeconds": 3.29
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "400m Freestyle",
+          "place": 2,
+          "time": "4:57.36",
+          "seconds": 297.36,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29",
+          "aheadName": "CHRISTOPHER HILL",
+          "aheadTime": "4:55.66",
+          "gapSeconds": 1.7
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "800m Freestyle",
+          "place": 2,
+          "time": "10:25.47",
+          "seconds": 625.47,
+          "meet": "Nationals",
+          "resultDate": "2026-05-02",
+          "aheadName": "CHRISTOPHER HILL",
+          "aheadTime": "10:01.43",
+          "gapSeconds": 24.04
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "400m Freestyle",
+          "place": 3,
+          "time": "5:19.95",
+          "seconds": 319.95,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "CHRISTOPHER VELLIARIS",
+          "aheadTime": "5:15.05",
+          "gapSeconds": 4.9
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "400m Individual Medley",
+          "place": 3,
+          "time": "5:37.25",
+          "seconds": 337.25,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28",
+          "aheadName": "JASON BUCKNER",
+          "aheadTime": "5:34.51",
+          "gapSeconds": 2.74
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "50m Butterfly",
+          "place": 3,
+          "time": "31.79",
+          "seconds": 31.79,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "BRYCE ANDERSON",
+          "aheadTime": "28.52",
+          "gapSeconds": 3.27
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "100m Butterfly",
+          "place": 4,
+          "time": "1:20.42",
+          "seconds": 80.42,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "JASON BUCKNER",
+          "aheadTime": "1:12.98",
+          "gapSeconds": 7.44
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Freestyle",
+          "place": 4,
+          "time": "1:08.48",
+          "seconds": 68.48,
+          "meet": "Nationals",
+          "resultDate": "2026-05-02",
+          "aheadName": "ED ANDERSON",
+          "aheadTime": "1:04.40",
+          "gapSeconds": 4.08
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "200m Individual Medley",
+          "place": 5,
+          "time": "2:52.58",
+          "seconds": 172.57999999999998,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "GLEN CHILD",
+          "aheadTime": "2:48.82",
+          "gapSeconds": 3.76
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "100m Butterfly",
+          "place": 5,
+          "time": "1:09.13",
+          "seconds": 69.13,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "JAMES WATSON",
+          "aheadTime": "1:08.40",
+          "gapSeconds": 0.73
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "200m Individual Medley",
+          "place": 5,
+          "time": "2:34.22",
+          "seconds": 154.22,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30",
+          "aheadName": "BRADLEY HALICEK",
+          "aheadTime": "2:27.66",
+          "gapSeconds": 6.56
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "800m Freestyle",
+          "place": 5,
+          "time": "10:25.47",
+          "seconds": 625.47,
+          "meet": "Nationals",
+          "resultDate": "2026-05-02",
+          "aheadName": "DAMIEN EYRE",
+          "aheadTime": "10:14.35",
+          "gapSeconds": 11.12
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "25m Butterfly",
+          "place": 5,
+          "time": "14.56",
+          "seconds": 14.56,
+          "meet": "QSM Interclub",
+          "resultDate": "2026-06-27",
+          "aheadName": "CHRISTOPHER HILL",
+          "aheadTime": "14.49",
+          "gapSeconds": 0.07
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "100m Individual Medley",
+          "place": 6,
+          "time": "1:12.32",
+          "seconds": 72.32,
+          "meet": "QSM Interclub",
+          "resultDate": "2026-06-27",
+          "aheadName": "JAMES WATSON",
+          "aheadTime": "1:09.41",
+          "gapSeconds": 2.91
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "25m Freestyle",
+          "place": 6,
+          "time": "14.96",
+          "seconds": 14.96,
+          "meet": "Nationals",
+          "resultDate": "2026-05-02",
+          "aheadName": "HAYDN GERRARD",
+          "aheadTime": "14.31",
+          "gapSeconds": 0.65
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "200m Freestyle",
+          "place": 7,
+          "time": "2:24.90",
+          "seconds": 144.9,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29",
+          "aheadName": "JUERGEN LANGFELDT",
+          "aheadTime": "2:22.73",
+          "gapSeconds": 2.17
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "50m Backstroke",
+          "place": 8,
+          "time": "33.00",
+          "seconds": 33,
+          "meet": "QSM Interclub",
+          "resultDate": "2026-06-27",
+          "aheadName": "ANDREW OSBORNE",
+          "aheadTime": "32.26",
+          "gapSeconds": 0.74
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "50m Freestyle",
+          "place": 8,
+          "time": "31.95",
+          "seconds": 31.95,
+          "meet": "Nationals",
+          "resultDate": "2026-05-02",
+          "aheadName": "HAYDN GERRARD",
+          "aheadTime": "31.77",
+          "gapSeconds": 0.18
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "400m Freestyle",
+          "place": 9,
+          "time": "4:57.36",
+          "seconds": 297.36,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29",
+          "aheadName": "CHRISTOPHER HILL",
+          "aheadTime": "4:55.66",
+          "gapSeconds": 1.7
+        }
+      ]
+    },
+    {
+      "id": "2026-06-28-josh-hemelaar",
+      "swimmerId": "josh-hemelaar",
+      "checkedAt": "2026-06-28T07:41:56.805Z",
+      "ageGroup": "Men 40-44",
+      "source": "Official MSARC ranking portal.",
+      "entries": [
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "30MIN Freestyle",
+          "place": 1,
+          "time": "1775",
+          "seconds": 1775,
+          "meet": "Aerobics",
+          "resultDate": "2026-01-21"
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "30MIN Freestyle",
+          "place": 1,
+          "time": "1775",
+          "seconds": 1775,
+          "meet": "Aerobics",
+          "resultDate": "2026-01-21"
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "200m Backstroke",
+          "place": 2,
+          "time": "2:55.18",
+          "seconds": 175.18,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "ROLAND BARRETT",
+          "aheadTime": "2:27.91",
+          "gapSeconds": 27.27
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "400m Freestyle",
+          "place": 2,
+          "time": "5:54.62",
+          "seconds": 354.62,
+          "meet": "Aerobics",
+          "resultDate": "2026-05-20",
+          "aheadName": "RICK MITCHELL",
+          "aheadTime": "5:11.33",
+          "gapSeconds": 43.29
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "200m Backstroke",
+          "place": 2,
+          "time": "2:55.18",
+          "seconds": 175.18,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "ROLAND BARRETT",
+          "aheadTime": "2:27.91",
+          "gapSeconds": 27.27
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "400m Freestyle",
+          "place": 2,
+          "time": "5:54.62",
+          "seconds": 354.62,
+          "meet": "Aerobics",
+          "resultDate": "2026-05-20",
+          "aheadName": "RICK MITCHELL",
+          "aheadTime": "5:11.33",
+          "gapSeconds": 43.29
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Butterfly",
+          "place": 2,
+          "time": "1:06.67",
+          "seconds": 66.67,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "1:06.64",
+          "gapSeconds": 0.03
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "100m Freestyle",
+          "place": 3,
+          "time": "1:03.60",
+          "seconds": 63.6,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "RICK MITCHELL",
+          "aheadTime": "1:02.89",
+          "gapSeconds": 0.71
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Backstroke",
+          "place": 3,
+          "time": "1:12.05",
+          "seconds": 72.05,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "1:06.11",
+          "gapSeconds": 5.94
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Freestyle",
+          "place": 3,
+          "time": "1:01.40",
+          "seconds": 61.4,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "59.61",
+          "gapSeconds": 1.79
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "200m Backstroke",
+          "place": 3,
+          "time": "2:46.61",
+          "seconds": 166.61,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "2:29.07",
+          "gapSeconds": 17.54
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "200m Individual Medley",
+          "place": 3,
+          "time": "2:45.97",
+          "seconds": 165.97,
+          "meet": "QSM Interclub",
+          "resultDate": "2026-06-27",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "2:23.97",
+          "gapSeconds": 22
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Individual Medley",
+          "place": 4,
+          "time": "1:09.52",
+          "seconds": 69.52,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "1:05.16",
+          "gapSeconds": 4.36
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "200m Backstroke",
+          "place": 5,
+          "time": "2:46.61",
+          "seconds": 166.61,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "2:29.07",
+          "gapSeconds": 17.54
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "50m Butterfly",
+          "place": 5,
+          "time": "30.15",
+          "seconds": 30.15,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "MICHAEL DRIVER",
+          "aheadTime": "29.86",
+          "gapSeconds": 0.29
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "25m Backstroke",
+          "place": 5,
+          "time": "15.01",
+          "seconds": 15.01,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "14.50",
+          "gapSeconds": 0.51
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "25m Freestyle",
+          "place": 5,
+          "time": "12.46",
+          "seconds": 12.46,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30",
+          "aheadName": "ROLAND BARRETT",
+          "aheadTime": "12.39",
+          "gapSeconds": 0.07
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "50m Backstroke",
+          "place": 5,
+          "time": "31.95",
+          "seconds": 31.95,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "ROBERT MULLER",
+          "aheadTime": "30.67",
+          "gapSeconds": 1.28
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "50m Butterfly",
+          "place": 5,
+          "time": "29.12",
+          "seconds": 29.12,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "28.74",
+          "gapSeconds": 0.38
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "100m Freestyle",
+          "place": 6,
+          "time": "1:03.60",
+          "seconds": 63.6,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "RICK MITCHELL",
+          "aheadTime": "1:02.89",
+          "gapSeconds": 0.71
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "100m Backstroke",
+          "place": 6,
+          "time": "1:12.05",
+          "seconds": 72.05,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "1:06.11",
+          "gapSeconds": 5.94
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "100m Butterfly",
+          "place": 6,
+          "time": "1:06.67",
+          "seconds": 66.67,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "1:06.64",
+          "gapSeconds": 0.03
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "25m Breaststroke",
+          "place": 6,
+          "time": "16.66",
+          "seconds": 16.66,
+          "meet": "QSM Interclub",
+          "resultDate": "2026-06-27",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "15.65",
+          "gapSeconds": 1.01
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "25m Butterfly",
+          "place": 6,
+          "time": "13.10",
+          "seconds": 13.1,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "13.09",
+          "gapSeconds": 0.01
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "200m Individual Medley",
+          "place": 7,
+          "time": "2:45.97",
+          "seconds": 165.97,
+          "meet": "QSM Interclub",
+          "resultDate": "2026-06-27",
+          "aheadName": "TIMOTHY POISEL",
+          "aheadTime": "2:29.41",
+          "gapSeconds": 16.56
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "50m Freestyle",
+          "place": 7,
+          "time": "28.63",
+          "seconds": 28.63,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "DAN GRANT",
+          "aheadTime": "28.62",
+          "gapSeconds": 0.01
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "50m Butterfly",
+          "place": 8,
+          "time": "30.15",
+          "seconds": 30.15,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "MATTHEW SMITH",
+          "aheadTime": "30.08",
+          "gapSeconds": 0.07
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "50m Freestyle",
+          "place": 8,
+          "time": "27.36",
+          "seconds": 27.36,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28",
+          "aheadName": "SEAN GIURICIN",
+          "aheadTime": "26.60",
+          "gapSeconds": 0.76
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "25m Backstroke",
+          "place": 10,
+          "time": "15.01",
+          "seconds": 15.01,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30",
+          "aheadName": "NATHAN CHENCO",
+          "aheadTime": "14.69",
+          "gapSeconds": 0.32
+        }
+      ]
+    },
+    {
+      "id": "2026-06-28-stuart-collins",
+      "swimmerId": "stuart-collins",
+      "checkedAt": "2026-06-28T07:41:56.805Z",
+      "ageGroup": "Men 50-54",
+      "source": "Official MSARC ranking portal.",
+      "entries": [
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "100m Backstroke",
+          "place": 1,
+          "time": "1:26.22",
+          "seconds": 86.22,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21"
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "200m Backstroke",
+          "place": 1,
+          "time": "2:59.64",
+          "seconds": 179.64,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Backstroke",
+          "place": 1,
+          "time": "1:20.11",
+          "seconds": 80.11,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "200m Backstroke",
+          "place": 1,
+          "time": "2:50.32",
+          "seconds": 170.32,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29"
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "400m Backstroke",
+          "place": 1,
+          "time": "5:52.97",
+          "seconds": 352.97,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30"
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "200m Backstroke",
+          "place": 2,
+          "time": "2:59.64",
+          "seconds": 179.64,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "BRADLEY HALICEK",
+          "aheadTime": "2:32.22",
+          "gapSeconds": 27.42
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "400m Backstroke",
+          "place": 2,
+          "time": "5:52.97",
+          "seconds": 352.97,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30",
+          "aheadName": "BRADLEY HALICEK",
+          "aheadTime": "5:00.36",
+          "gapSeconds": 52.61
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "400m Freestyle",
+          "place": 2,
+          "time": "5:22.17",
+          "seconds": 322.17,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "5:19.95",
+          "gapSeconds": 2.22
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "200m Freestyle",
+          "place": 2,
+          "time": "2:25.35",
+          "seconds": 145.35,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "2:24.90",
+          "gapSeconds": 0.45
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "100m Freestyle",
+          "place": 3,
+          "time": "1:10.48",
+          "seconds": 70.48,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "GREG ARMITAGE",
+          "aheadTime": "1:09.53",
+          "gapSeconds": 0.95
+        },
+        {
+          "scope": "Queensland",
+          "course": "LC",
+          "event": "50m Freestyle",
+          "place": 3,
+          "time": "32.76",
+          "seconds": 32.76,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "GREG ARMITAGE",
+          "aheadTime": "29.70",
+          "gapSeconds": 3.06
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "400m Freestyle",
+          "place": 3,
+          "time": "5:06.67",
+          "seconds": 306.67,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "4:57.36",
+          "gapSeconds": 9.31
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "50m Backstroke",
+          "place": 3,
+          "time": "37.05",
+          "seconds": 37.05,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "CHRISTOPHER HILL",
+          "aheadTime": "35.59",
+          "gapSeconds": 1.46
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "800m Freestyle",
+          "place": 3,
+          "time": "10:46.21",
+          "seconds": 646.21,
+          "meet": "Nationals",
+          "resultDate": "2026-05-02",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "10:25.47",
+          "gapSeconds": 20.74
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "100m Backstroke",
+          "place": 4,
+          "time": "1:26.22",
+          "seconds": 86.22,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "AARON CLELAND",
+          "aheadTime": "1:17.26",
+          "gapSeconds": 8.96
+        },
+        {
+          "scope": "Australia",
+          "course": "LC",
+          "event": "400m Freestyle",
+          "place": 4,
+          "time": "5:22.17",
+          "seconds": 322.17,
+          "meet": "QMM Interclub",
+          "resultDate": "2026-02-21",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "5:19.95",
+          "gapSeconds": 2.22
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "200m Backstroke",
+          "place": 5,
+          "time": "2:50.32",
+          "seconds": 170.32,
+          "meet": "Nationals",
+          "resultDate": "2026-04-29",
+          "aheadName": "DAMIEN EYRE",
+          "aheadTime": "2:36.88",
+          "gapSeconds": 13.44
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "100m Freestyle",
+          "place": 5,
+          "time": "1:08.63",
+          "seconds": 68.63,
+          "meet": "Nationals",
+          "resultDate": "2026-04-30",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "1:08.48",
+          "gapSeconds": 0.15
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "800m Freestyle",
+          "place": 6,
+          "time": "10:46.21",
+          "seconds": 646.21,
+          "meet": "Nationals",
+          "resultDate": "2026-05-02",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "10:25.47",
+          "gapSeconds": 20.74
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "50m Freestyle",
+          "place": 6,
+          "time": "31.56",
+          "seconds": 31.56,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28",
+          "aheadName": "NAM BALDWIN",
+          "aheadTime": "30.37",
+          "gapSeconds": 1.19
+        },
+        {
+          "scope": "Queensland",
+          "course": "SC",
+          "event": "25m Freestyle",
+          "place": 7,
+          "time": "15.21",
+          "seconds": 15.21,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "14.96",
+          "gapSeconds": 0.25
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "200m Freestyle",
+          "place": 8,
+          "time": "2:25.35",
+          "seconds": 145.35,
+          "meet": "Nationals",
+          "resultDate": "2026-05-01",
+          "aheadName": "PAUL NICHOLS",
+          "aheadTime": "2:24.90",
+          "gapSeconds": 0.45
+        },
+        {
+          "scope": "Australia",
+          "course": "SC",
+          "event": "100m Backstroke",
+          "place": 9,
+          "time": "1:20.11",
+          "seconds": 80.11,
+          "meet": "Nationals",
+          "resultDate": "2026-04-28",
+          "aheadName": "OWEN HAENEY",
+          "aheadTime": "1:18.77",
+          "gapSeconds": 1.34
+        }
+      ]
     }
   ],
   "competitions": [
     {
-      "id": "msarc-josh-hemelaar-2026-009",
+      "id": "msarc-josh-hemelaar-2026-033",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "100m Butterfly",
+      "course": "SC",
+      "time": "1:13.44",
+      "points": "393",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-035",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "200m Individual Medley",
+      "course": "SC",
+      "time": "2:45.97",
+      "points": "412",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-017",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "25m Breaststroke",
+      "course": "SC",
+      "time": "16.66",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-020",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "25m Butterfly",
+      "course": "SC",
+      "time": "13.31",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-022",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "25m Butterfly",
+      "course": "SC",
+      "time": "13.64",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-024",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "25m Butterfly",
+      "course": "SC",
+      "time": "14.74",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-025",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "25m Butterfly",
+      "course": "SC",
+      "time": "15.76",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-002",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "25m Freestyle",
+      "course": "SC",
+      "time": "13.15",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-028",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "50m Butterfly",
+      "course": "SC",
+      "time": "29.67",
+      "points": "523",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-030",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "50m Butterfly",
+      "course": "SC",
+      "time": "33.17",
+      "points": "374",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-031",
+      "swimmerId": "josh-hemelaar",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "40-44",
+      "event": "50m Butterfly",
+      "course": "SC",
+      "time": "34.33",
+      "points": "337",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-josh-hemelaar-2026-010",
       "swimmerId": "josh-hemelaar",
       "competition": "AUSTRALIA",
       "date": "2026-05-20",
@@ -1893,7 +3114,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-023",
+      "id": "msarc-josh-hemelaar-2026-032",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -1908,7 +3129,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-024",
+      "id": "msarc-josh-hemelaar-2026-034",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -1923,7 +3144,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-018",
+      "id": "msarc-josh-hemelaar-2026-021",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -1937,7 +3158,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-019",
+      "id": "msarc-josh-hemelaar-2026-023",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -1951,7 +3172,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-012",
+      "id": "msarc-josh-hemelaar-2026-013",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -1966,7 +3187,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-022",
+      "id": "msarc-josh-hemelaar-2026-029",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -1981,7 +3202,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-008",
+      "id": "msarc-josh-hemelaar-2026-009",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-30",
@@ -1996,7 +3217,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-011",
+      "id": "msarc-josh-hemelaar-2026-012",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-30",
@@ -2024,7 +3245,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-003",
+      "id": "msarc-josh-hemelaar-2026-004",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-30",
@@ -2038,7 +3259,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-006",
+      "id": "msarc-josh-hemelaar-2026-007",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-30",
@@ -2053,7 +3274,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-015",
+      "id": "msarc-josh-hemelaar-2026-016",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-29",
@@ -2068,7 +3289,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-017",
+      "id": "msarc-josh-hemelaar-2026-019",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-29",
@@ -2082,7 +3303,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-021",
+      "id": "msarc-josh-hemelaar-2026-027",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-29",
@@ -2097,7 +3318,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-013",
+      "id": "msarc-josh-hemelaar-2026-014",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-28",
@@ -2112,7 +3333,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-016",
+      "id": "msarc-josh-hemelaar-2026-018",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-28",
@@ -2126,7 +3347,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-002",
+      "id": "msarc-josh-hemelaar-2026-003",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-28",
@@ -2140,7 +3361,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-005",
+      "id": "msarc-josh-hemelaar-2026-006",
       "swimmerId": "josh-hemelaar",
       "competition": "BRISBANE AC",
       "date": "2026-04-28",
@@ -2155,7 +3376,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-007",
+      "id": "msarc-josh-hemelaar-2026-008",
       "swimmerId": "josh-hemelaar",
       "competition": "MIAMI AQUATIC CENTRE",
       "date": "2026-02-21",
@@ -2170,7 +3391,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-014",
+      "id": "msarc-josh-hemelaar-2026-015",
       "swimmerId": "josh-hemelaar",
       "competition": "MIAMI AQUATIC CENTRE",
       "date": "2026-02-21",
@@ -2185,7 +3406,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-020",
+      "id": "msarc-josh-hemelaar-2026-026",
       "swimmerId": "josh-hemelaar",
       "competition": "MIAMI AQUATIC CENTRE",
       "date": "2026-02-21",
@@ -2200,7 +3421,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-004",
+      "id": "msarc-josh-hemelaar-2026-005",
       "swimmerId": "josh-hemelaar",
       "competition": "MIAMI AQUATIC CENTRE",
       "date": "2026-02-21",
@@ -2215,7 +3436,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-josh-hemelaar-2026-010",
+      "id": "msarc-josh-hemelaar-2026-011",
       "swimmerId": "josh-hemelaar",
       "competition": "AUSTRALIA",
       "date": "2026-01-21",
@@ -5876,7 +7097,51 @@
       "medal": "Unknown"
     },
     {
+      "id": "msarc-paul-nichols-2026-027",
+      "swimmerId": "paul-nichols",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "50-54",
+      "event": "100m Individual Medley",
+      "course": "SC",
+      "time": "1:12.32",
+      "points": "508",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-paul-nichols-2026-016",
+      "swimmerId": "paul-nichols",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "50-54",
+      "event": "25m Butterfly",
+      "course": "SC",
+      "time": "14.56",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
       "id": "msarc-paul-nichols-2026-014",
+      "swimmerId": "paul-nichols",
+      "competition": "BRISBANE AC",
+      "date": "2026-06-27",
+      "year": 2026,
+      "ageGroup": "50-54",
+      "event": "50m Backstroke",
+      "course": "SC",
+      "time": "33.00",
+      "points": "529",
+      "location": "BRISBANE AC",
+      "placing": "Official MSARC result history",
+      "medal": "Unknown"
+    },
+    {
+      "id": "msarc-paul-nichols-2026-015",
       "swimmerId": "paul-nichols",
       "competition": "AUSTRALIA",
       "date": "2026-05-20",
@@ -5979,7 +7244,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-023",
+      "id": "msarc-paul-nichols-2026-025",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -5994,7 +7259,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-015",
+      "id": "msarc-paul-nichols-2026-017",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -6008,7 +7273,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-019",
+      "id": "msarc-paul-nichols-2026-021",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-05-01",
@@ -6023,7 +7288,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-026",
+      "id": "msarc-paul-nichols-2026-029",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-04-30",
@@ -6038,7 +7303,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-017",
+      "id": "msarc-paul-nichols-2026-019",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-04-30",
@@ -6052,7 +7317,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-020",
+      "id": "msarc-paul-nichols-2026-022",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-04-30",
@@ -6141,7 +7406,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-024",
+      "id": "msarc-paul-nichols-2026-026",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-04-28",
@@ -6156,7 +7421,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-016",
+      "id": "msarc-paul-nichols-2026-018",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-04-28",
@@ -6170,7 +7435,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-027",
+      "id": "msarc-paul-nichols-2026-030",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-04-28",
@@ -6185,7 +7450,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-021",
+      "id": "msarc-paul-nichols-2026-023",
       "swimmerId": "paul-nichols",
       "competition": "BRISBANE AC",
       "date": "2026-04-28",
@@ -6200,7 +7465,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-022",
+      "id": "msarc-paul-nichols-2026-024",
       "swimmerId": "paul-nichols",
       "competition": "MIAMI AQUATIC CENTRE",
       "date": "2026-02-21",
@@ -6215,7 +7480,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-025",
+      "id": "msarc-paul-nichols-2026-028",
       "swimmerId": "paul-nichols",
       "competition": "MIAMI AQUATIC CENTRE",
       "date": "2026-02-21",
@@ -6245,7 +7510,7 @@
       "medal": "Unknown"
     },
     {
-      "id": "msarc-paul-nichols-2026-018",
+      "id": "msarc-paul-nichols-2026-020",
       "swimmerId": "paul-nichols",
       "competition": "MIAMI AQUATIC CENTRE",
       "date": "2026-02-21",
@@ -11364,7 +12629,7 @@
       "medal": "Unknown"
     }
   ],
-  "updatedAt": "2026-06-26T06:13:20.614Z",
+  "updatedAt": "2026-06-28T07:41:56.805Z",
   "achievements": [
     {
       "id": "msa-50x50-2025-josh-hemelaar",
