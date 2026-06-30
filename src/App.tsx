@@ -1079,7 +1079,7 @@ export function App() {
                 <p className="eyebrow">Competitions</p>
                 <h2>Placings and medals</h2>
               </div>
-              <div className="section-controls">
+              <div className="section-controls competition-controls">
                 <label className="field compact">
                   <span>Competition</span>
                   <select value={selectedCompetitionName} onChange={(event) => setSelectedCompetitionName(event.target.value)}>
