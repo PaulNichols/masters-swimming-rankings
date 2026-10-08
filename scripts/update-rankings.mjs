@@ -1,4 +1,6 @@
 import fs from 'node:fs/promises';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createSourceClient, sourceProblem } from './source-client.mjs';
 
 const dataPath = new URL('../public/data/rankings.json', import.meta.url);
 const currentYear = new Date().getFullYear();
@@ -7,12 +9,6 @@ const e1000StartYear = 2010;
 const e1000SourceUrl = 'https://e1000.msarc.org.au/results/results.php';
 const target26Metres = 26 * 2600;
 const millionMetresTarget = 1_000_000;
-const sourceHeaders = {
-  accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-  'accept-language': 'en-AU,en;q=0.9',
-  'user-agent': 'Mozilla/5.0 (compatible; masters-swimming-rankings-data-refresh/1.0)',
-};
-
 const swimmers = [
   {
     id: 'paul-nichols',
@@ -86,35 +82,16 @@ function seconds(value) {
   return undefined;
 }
 
-async function fetchText(url) {
-  const response = await fetch(url, {
-    headers: sourceHeaders,
-  });
-  if (!response.ok) {
-    throw new Error(`Request failed ${response.status}: ${url}`);
+async function readSource(client, url, options) {
+  const html = await client.read(url, options);
+  const problem = sourceProblem(html, options.kind);
+  if (problem) {
+    throw new Error(`${problem}: ${url}`);
   }
-
-  return response.text();
+  return html;
 }
 
-async function fetchForm(url, body) {
-  const response = await fetch(url, {
-    method: 'POST',
-    body: new URLSearchParams(body),
-    headers: {
-      ...sourceHeaders,
-      'content-type': 'application/x-www-form-urlencoded',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed ${response.status}: ${url}`);
-  }
-
-  return response.text();
-}
-
-async function readResultHistory(swimmer, year) {
+async function readResultHistory(client, swimmer, year) {
   const url = new URL('https://portal.msarc.org.au/results/results.php');
   url.searchParams.set('bg', '1');
   url.searchParams.set('year', String(year));
@@ -123,8 +100,9 @@ async function readResultHistory(swimmer, year) {
   url.searchParams.set('pb', 'no');
   url.searchParams.set('Show', 'Show');
 
-  const html = await fetchText(url);
-  const rows = [...html.matchAll(/<tr><td align='center'><br><\/td>.*?<\/tr>/gis)];
+  const html = await readSource(client, url, { kind: 'history' });
+  // Browser HTML normalises quotes and attributes; do not depend on raw PHP markup.
+  const rows = [...html.matchAll(/<tr\b[^>]*>.*?<\/tr>/gis)];
 
   return rows
     .map((match) => cells(match[0]))
@@ -159,17 +137,20 @@ function enduranceMetres(distance, result) {
   return undefined;
 }
 
-async function readEnduranceHistory(swimmer, year) {
-  const html = await fetchForm(e1000SourceUrl, {
-    year: String(year),
-    name: swimmer.e1000Name,
-    aussiid: '',
-    Show: 'Show',
+async function readEnduranceHistory(client, swimmer, year) {
+  const html = await readSource(client, e1000SourceUrl, {
+    kind: 'endurance',
+    body: {
+      year: String(year),
+      name: swimmer.e1000Name,
+      aussiid: '',
+      Show: 'Show',
+    },
   });
 
   const uniqueRows = new Map();
 
-  [...html.matchAll(/<tr>.*?<\/tr>/gis)]
+  [...html.matchAll(/<tr\b[^>]*>.*?<\/tr>/gis)]
     .map((match) => cells(match[0]))
     .filter((row) => row.length >= 12 && /^\d+$/.test(row[0]) && row[7] && Number(row[9]) > 0 && row[10])
     .forEach((row) => {
@@ -294,7 +275,7 @@ function rankingUrl(course, group, state) {
 }
 
 function rankingRows(sectionHtml) {
-  return [...sectionHtml.matchAll(/<tr>.*?<\/tr>/gis)]
+  return [...sectionHtml.matchAll(/<tr\b[^>]*>.*?<\/tr>/gis)]
     .map((match) => cells(match[0]))
     .filter((row) => row.length >= 8 && /^\d+$/.test(row[0]))
     .map((row) => ({
@@ -307,7 +288,7 @@ function rankingRows(sectionHtml) {
     }));
 }
 
-async function readCurrentRankings(swimmer) {
+async function readCurrentRankings(client, swimmer) {
   const entries = [];
   const scopes = [
     { scope: 'Queensland', state: 'QLD', course: 'LC' },
@@ -318,8 +299,12 @@ async function readCurrentRankings(swimmer) {
 
   for (const group of swimmer.rankingGroups) {
     for (const query of scopes) {
-      const html = await fetchText(rankingUrl(query.course, group, query.state));
-      const sections = html.split("<tr><td height='40' valign='middle' colspan='10' class='stroke'>").slice(1);
+      const url = rankingUrl(query.course, group, query.state);
+      const html = await readSource(client, url, { kind: 'ranking' });
+      const sections = html.split(/<tr\b[^>]*>\s*<td\b[^>]*class=["']stroke["'][^>]*>/iu).slice(1);
+      if (!sections.some((section) => rankingRows(section).length > 0)) {
+        throw new Error(`No ranking rows could be parsed: ${url}`);
+      }
 
       for (const section of sections) {
         const eventMatch = section.match(/^(.*?)<\/td>/is);
@@ -359,66 +344,105 @@ async function readCurrentRankings(swimmer) {
   return entries;
 }
 
-async function main() {
-  const existing = JSON.parse(await fs.readFile(dataPath, 'utf8'));
-  const now = new Date().toISOString();
-  const years = Array.from({ length: currentYear - historyStartYear + 1 }, (_, index) => historyStartYear + index);
-  const e1000Years = Array.from({ length: currentYear - e1000StartYear + 1 }, (_, index) => e1000StartYear + index);
-  const competitions = [];
-  const enduranceResults = [];
-  const newSnapshots = [];
-
-  for (const swimmer of swimmers) {
-    for (const year of years) {
-      competitions.push(...await readResultHistory(swimmer, year));
-    }
-
-    for (const year of e1000Years) {
-      enduranceResults.push(...await readEnduranceHistory(swimmer, year));
-    }
-
-    const entries = await readCurrentRankings(swimmer);
-    if (entries.length > 0) {
-      const ageGroup = `Men ${swimmer.rankingGroups.at(-1)}`;
-      newSnapshots.push({
-        id: `${now.slice(0, 10)}-${swimmer.id}`,
-        swimmerId: swimmer.id,
-        checkedAt: now,
-        ageGroup,
-        source: 'Official MSARC ranking portal.',
-        entries: entries.sort((a, b) => (a.place ?? 99) - (b.place ?? 99) || `${a.scope} ${a.course} ${a.event}`.localeCompare(`${b.scope} ${b.course} ${b.event}`)),
-      });
+export function validateHistory(previous, refreshed, swimmerId, label) {
+  const oldRows = previous.filter((row) => row.swimmerId === swimmerId);
+  const newRows = refreshed.filter((row) => row.swimmerId === swimmerId);
+  for (const year of new Set(oldRows.map((row) => row.year))) {
+    const oldCount = oldRows.filter((row) => row.year === year).length;
+    const newCount = newRows.filter((row) => row.year === year).length;
+    if (newCount < oldCount) {
+      throw new Error(`Incomplete ${label} for ${swimmerId} in ${year}: ${newCount} rows, previously ${oldCount}. Existing data will not be replaced.`);
     }
   }
-
-  const latestDate = now.slice(0, 10);
-  const retainedSnapshots = existing.snapshots.filter((snapshot) => !snapshot.id.startsWith(latestDate));
-
-  const updated = {
-    ...existing,
-    swimmers: swimmers.map((swimmer) => ({
-      id: swimmer.id,
-      name: swimmer.name,
-      club: swimmer.club,
-      ageGroups: [...new Set([
-        ...competitions
-          .filter((result) => result.swimmerId === swimmer.id)
-          .map((result) => `Men ${result.ageGroup}`),
-        ...swimmer.rankingGroups.map((group) => `Men ${group}`),
-      ])].sort(),
-    })),
-    snapshots: [...retainedSnapshots, ...newSnapshots],
-    competitions: competitions.sort((a, b) => a.swimmerId.localeCompare(b.swimmerId) || b.date.localeCompare(a.date) || a.event.localeCompare(b.event)),
-    enduranceResults: enduranceResults.sort((a, b) => a.swimmerId.localeCompare(b.swimmerId) || b.date.localeCompare(a.date) || a.stroke.localeCompare(b.stroke)),
-    endurancePrograms: swimmers.flatMap((swimmer) => endurancePrograms(swimmer, enduranceResults, existing)),
-    updatedAt: now,
-  };
-
-  await fs.writeFile(dataPath, `${JSON.stringify(updated, null, 2)}\n`);
-  console.log(`Updated ${competitions.length} result rows, ${enduranceResults.length} endurance rows, and ${newSnapshots.length} current ranking snapshots.`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+export async function updateRankings({
+  outputPath = dataPath,
+  client = createSourceClient(),
+  configuredSwimmers = swimmers,
+  years = Array.from({ length: currentYear - historyStartYear + 1 }, (_, index) => historyStartYear + index),
+  e1000Years = Array.from({ length: currentYear - e1000StartYear + 1 }, (_, index) => e1000StartYear + index),
+} = {}) {
+  try {
+    const existing = JSON.parse(await fs.readFile(outputPath, 'utf8'));
+    const now = new Date().toISOString();
+    const competitions = [];
+    const enduranceResults = [];
+    const newSnapshots = [];
+
+    for (const swimmer of configuredSwimmers) {
+      for (const year of years) {
+        competitions.push(...await readResultHistory(client, swimmer, year));
+      }
+      validateHistory(existing.competitions, competitions, swimmer.id, 'result history');
+      if (!competitions.some((row) => row.swimmerId === swimmer.id)) {
+        throw new Error(`Empty result history for ${swimmer.id}; existing data will not be replaced.`);
+      }
+
+      for (const year of e1000Years) {
+        enduranceResults.push(...await readEnduranceHistory(client, swimmer, year));
+      }
+      validateHistory(existing.enduranceResults ?? [], enduranceResults, swimmer.id, 'endurance history');
+
+      const entries = await readCurrentRankings(client, swimmer);
+      const hadCurrentRankings = existing.snapshots.some((snapshot) => snapshot.swimmerId === swimmer.id
+        && snapshot.checkedAt.startsWith(String(currentYear)) && snapshot.entries.length > 0);
+      if (hadCurrentRankings && entries.length === 0) {
+        throw new Error(`Empty current rankings for ${swimmer.id}; existing data will not be replaced.`);
+      }
+      if (entries.length > 0) {
+        const ageGroup = `Men ${swimmer.rankingGroups.at(-1)}`;
+        newSnapshots.push({
+          id: `${now.slice(0, 10)}-${swimmer.id}`,
+          swimmerId: swimmer.id,
+          checkedAt: now,
+          ageGroup,
+          source: 'Official MSARC ranking portal.',
+          entries: entries.sort((a, b) => (a.place ?? 99) - (b.place ?? 99) || `${a.scope} ${a.course} ${a.event}`.localeCompare(`${b.scope} ${b.course} ${b.event}`)),
+        });
+      }
+    }
+
+    const latestDate = now.slice(0, 10);
+    const retainedSnapshots = existing.snapshots.filter((snapshot) => !snapshot.id.startsWith(latestDate));
+
+    const updated = {
+      ...existing,
+      swimmers: configuredSwimmers.map((swimmer) => ({
+        id: swimmer.id,
+        name: swimmer.name,
+        club: swimmer.club,
+        ageGroups: [...new Set([
+          ...competitions
+            .filter((result) => result.swimmerId === swimmer.id)
+            .map((result) => `Men ${result.ageGroup}`),
+          ...swimmer.rankingGroups.map((group) => `Men ${group}`),
+        ])].sort(),
+      })),
+      snapshots: [...retainedSnapshots, ...newSnapshots],
+      competitions: competitions.sort((a, b) => a.swimmerId.localeCompare(b.swimmerId) || b.date.localeCompare(a.date) || a.event.localeCompare(b.event)),
+      enduranceResults: enduranceResults.sort((a, b) => a.swimmerId.localeCompare(b.swimmerId) || b.date.localeCompare(a.date) || a.stroke.localeCompare(b.stroke)),
+      endurancePrograms: configuredSwimmers.flatMap((swimmer) => endurancePrograms(swimmer, enduranceResults, existing)),
+      updatedAt: now,
+    };
+
+    const temporaryPath = `${typeof outputPath === 'string' ? outputPath : fileURLToPath(outputPath)}.tmp-${process.pid}`;
+    try {
+      await fs.writeFile(temporaryPath, `${JSON.stringify(updated, null, 2)}\n`, { flag: 'wx' });
+      await fs.rename(temporaryPath, outputPath);
+    } finally {
+      await fs.rm(temporaryPath, { force: true });
+    }
+    console.log(`Updated ${competitions.length} result rows, ${enduranceResults.length} endurance rows, and ${newSnapshots.length} current ranking snapshots.`);
+    return updated;
+  } finally {
+    await client.close();
+  }
+}
+
+if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {
+  updateRankings().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
